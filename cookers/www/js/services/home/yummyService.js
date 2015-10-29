@@ -36,7 +36,7 @@ angular.module('cookers.services')
         '$http',
         '$q',
         'cookers_config',
-        function($http, $q) {
+        function($http, $q, cookers_config) {
             /**
              * cookStep에 들어가기 전 해당 cook이 내 yummyList에 있는지
              * 체크하는 서비스
