@@ -1,0 +1,12 @@
+.avatar_div{
+    min-height: 60px;
+}
+
+.avatar_img {
+    height:30px !important;
+    width:30px !important;
+}
+
+.cookdetail_btn > h2, .cookdetail_btn > h3 {
+    padding-bottom: 5px;
+}
