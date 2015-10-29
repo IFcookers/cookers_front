@@ -23,7 +23,7 @@ angular.module('cookers.controllers')
             /**
              * check button click Method
              */
-            $scope.checkBtnClick = function(selected_notice) {
+            $scope.checkBtnClick = function(selected_notice, index) {
                 console.log(selected_notice);
                 var code = selected_notice.kind_code;
 
@@ -36,7 +36,7 @@ angular.module('cookers.controllers')
 
                         } else {
                             console.log("cook modal open");
-                            $scope.openshowrecipeModal(selected_notice.cook._id);
+                            $scope.openshowrecipeModal(selected_notice.cook._id, index);
                         }
                     } else {
                         $ionicLoading.show({
@@ -55,7 +55,7 @@ angular.module('cookers.controllers')
             /**
              * 모달 open. 현재는 한개의 레시피만 열리지만, 추후 파라미터값(레시피 id와 같은)을 전송하여 해당 레시피의 상세 를 볼 수 있게함.
              */
-            $scope.openshowrecipeModal = function(cook_id){
+            $scope.openshowrecipeModal = function(cook_id, index){
                 /**
                  * 모달 초기화 함수.
                  * 모달의 경우 app.js 내의 state로서 정의할 수 없다.
@@ -84,6 +84,11 @@ angular.module('cookers.controllers')
 
                     $ionicSlideBoxDelegate.slide(0);
                     $scope.modal.show();
+
+                    /**
+                     * list에서 해당 항목 삭제
+                     */
+                    noticeService.removeNotice(index);
                 }, 1000);
 
             };

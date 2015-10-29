@@ -62,6 +62,10 @@ angular.module('cookers.services')
                         defer.resolve(data);
                     });
                     return defer.promise;
+                },
+
+                removeNotice : function(index){
+                    notices.splice(index,1);
                 }
             };
         }]);
