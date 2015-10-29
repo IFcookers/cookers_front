@@ -5,11 +5,10 @@ angular.module('cookers.services')
     .factory('searchService',[
         '$http',
         '$q',
-        function($http, $q) {
-            /**
-             *
-             *
-             */
+        'cookers_config',
+        function($http, $q, cookers_config) {
+
+            var address = cookers_config.url;
             var search = {};
             search.searchautocompleteHttpRequest= function(search_param){
 
@@ -23,7 +22,8 @@ angular.module('cookers.services')
                  */
                 var defer = $q.defer();
                 $http({
-                    url: "http://localhost:3000/rest/search",
+                    url:address+"/rest/search",
+                    /*url: "http://localhost:3000/rest/search",*/
                     method: 'POST',
                     data: search_param
                 }).success(function (data, status, headers, config) {

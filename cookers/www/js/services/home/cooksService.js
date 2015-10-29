@@ -5,11 +5,14 @@ angular.module('cookers.services')
     .factory('cooksService',[
         '$http',
         '$q',
-        function($http, $q) {
+        'cookers_config',
+        function($http, $q, cookers_config) {
             /**
              * function getcookslist ()
              * 홈에서 팔로우 한 사람들의 레시피들을 가져옴.
              */
+
+            var address = cookers_config.url;
             var cooksList = {};
             cooksList.getcooksList = function(following_list){
 
@@ -21,7 +24,7 @@ angular.module('cookers.services')
 
                 var defer = $q.defer();
                 $http({
-                    url: "http://localhost:3000/rest/cooks",
+                    url:address+"/rest/cooks",
                     method: 'POST',
                     data: temp
                 }).success(function (data, status, headers, config) {
