@@ -28,7 +28,7 @@ angular.module('cookers', [
 
             console.log("No.1");
             $ionicPlatform.offHardwareBackButton(function(){
-               console.log("hardwareBackbutton off")
+
             });
 
 
