@@ -15,6 +15,7 @@ angular.module('cookers.controllers')
              * ---> noticeService Creating... and  get message that group by noticeCode...
              *
              */
+            $scope.notices = noticeService.getNotices();
             $scope.$on('notice_reset',function(){
                 $scope.notices = noticeService.getNotices();
             })
