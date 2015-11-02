@@ -27,11 +27,18 @@ angular.module('cookers', [
         function ($ionicPlatform, $localStorage, userinfoService, cookerService, $rootScope, $cordovaPush, $ionicLoading) {
 
             console.log("No.1");
+            $ionicPlatform.offHardwareBackButton(function(){
+               console.log("hardwareBackbutton off")
+            });
+
+
             $ionicPlatform.ready(function () {
                 // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
                 // for form inputs)
+                //
                 if (window.cordova && window.cordova.plugins.Keyboard) {
                     cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+                    if(ionic.Platform.isIOS()) cordova.plugins.Keyboard.disableScroll(true);
                 }
                 if (window.StatusBar) {
                     StatusBar.styleDefault();
