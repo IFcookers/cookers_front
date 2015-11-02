@@ -26,7 +26,6 @@ angular.module('cookers', [
         '$ionicLoading',
         function ($ionicPlatform, $localStorage, userinfoService, cookerService, $rootScope, $cordovaPush, $ionicLoading) {
 
-            console.log("No.1");
             $ionicPlatform.offHardwareBackButton(function(){
 
             });
