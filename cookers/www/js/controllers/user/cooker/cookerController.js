@@ -14,11 +14,18 @@ angular.module('cookers.controllers')
         '$rootScope',
         '$window',
         '$ionicHistory',
-        function($scope, $localStorage, userStatus, cookerinfoService,cookerService,$state,$rootScope,$window,$ionicHistory){
+        'currentinfoService',
+        '$ionicModal',
+        '$ionicLoading',
+        '$timeout',
+        '$ionicSlideBoxDelegate',
+        function($scope, $localStorage, userStatus, cookerinfoService,cookerService,$state,$rootScope,$window,$ionicHistory,currentinfoService,$ionicModal,$ionicLoading,$timeout,$ionicSlideBoxDelegate){
 
             $scope.cooker_profile = cookerinfoService.getcookerInfo();
             $scope.cooker_zimmy = cookerinfoService.getcookerZimmy();
             $scope.cooker_mycook = cookerinfoService.getcookerMycook();
+
+
 
             /**
              * userStatus => false -> 다른 유저 보기
@@ -65,6 +72,20 @@ angular.module('cookers.controllers')
                 $scope.mycook_zimmy = 'zimmy';
             };
 
+
+
+            $scope.cooker_zimmy_count = 3;
+            $scope.cooker_mycook_count = 3;
+            $scope.loadmoreCookEvent = function(){
+
+                $scope.cooker_zimmy_count = $scope.cooker_zimmy_count*1 + 2;
+                $scope.cooker_mycook_count = $scope.cooker_mycook_count*1 + 2;
+
+                $timeout(function() {
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+                }, 1250);
+            };
+
             $scope.profileBtnEvent = function(){
                 if(userStatus == true){
                     /**
@@ -108,6 +129,48 @@ angular.module('cookers.controllers')
             $scope.back_view_go = function(){
                 var backView = $ionicHistory.backView();
                 backView.go();
-            }
+            };
+
+
+            $scope.openshowrecipeModal = function(cook_id){
+                /**
+                 * 모달 초기화 함수.
+                 * 모달의 경우 app.js 내의 state로서 정의할 수 없다.
+                 */
+
+                /**
+                 * 아래의 서비스를 통해 cook_id를 유지시키고 서버로부터 해당 cook정보를 가져온다.
+                 */
+                currentinfoService.set_currentcook_id(cook_id);
+
+                $ionicModal.fromTemplateUrl('views/home/showcookingmodalTemplate.html', {
+                    scope: $scope,
+                    animation: 'mh-slide'
+                }).then(function(modal) {
+                    $scope.modal = modal;
+                });
+
+                $ionicLoading.show({
+                    showBackdrop: false,
+                    showDelay: 0,
+                    template : '<ion-spinner icon="lines" class="spinner-energized"></ion-spinner>'
+                });
+
+                $timeout(function () {
+                    $ionicLoading.hide();
+
+                    $ionicSlideBoxDelegate.slide(0);
+                    $scope.modal.show();
+                }, 1000);
+            };
+            $scope.closeModal = function() {
+                $scope.modal.hide();
+            };
+
+
+
+
+
+
         }
     ]);

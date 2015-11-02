@@ -72,7 +72,7 @@
 
         <!-- 나중에 zimmy mycook과 연결해서  ng-repeat -->
 
-        <ion-scroll direction="y" style="margin:auto;!important;height:100%!important;width: 90% !important;"
+        <ion-scroll direction="y" style="margin:auto;!important;height:250px!important;width: 90% !important;"
                     ng-if="mycook_zimmy == 'mycook'">
 
             <div ng-if="cooker_profile.my_cook.length == 0" class="card">
@@ -81,10 +81,10 @@
                 </div>
             </div>
 
-            <div class="card" ng-repeat="mycook in cooker_mycook"
+            <div class="card" ng-repeat="mycook in cooker_mycook | limitTo : cooker_mycook_count"
                  style="height:80px;!important;margin-top:0px;!important;">
 
-                <a class="item item-thumbnail-left" href="#">
+                <a class="item item-thumbnail-left" href="#" ng-click="openshowrecipeModal(mycook._id)">
                     <img ng-src="{{mycook.complete_photo}}" style="height:inherit;!important;">
 
                     <h2>{{mycook.title}}</h2><br>
@@ -92,10 +92,15 @@
                     <p>{{mycook.desc}}</p>
                 </a>
             </div>
+            <ion-infinite-scroll
+                    on-infinite="loadmoreCookEvent()"
+                    spinner="bubbles"
+                    distance="1%">
+            </ion-infinite-scroll>
         </ion-scroll>
 
 
-        <ion-scroll direction="y" style="margin:auto;!important;height:100%!important;width: 90% !important;"
+        <ion-scroll direction="y" style="margin:auto;!important;height:250px!important;width: 90% !important;"
                     ng-if="mycook_zimmy == 'zimmy'">
 
             <div ng-if="cooker_profile.zimmys.length == 0" class="card">
@@ -104,17 +109,22 @@
                 </div>
             </div>
 
-            <div class="card" ng-repeat="zimmy in cooker_zimmy"
+            <div class="card" ng-repeat="zimmy in cooker_zimmy | limitTo : cooker_zimmy_count"
                  style="height:80px;!important;margin-top:0px;!important;">
 
-                <a class="item item-thumbnail-left" href="#">
+                <a class="item item-thumbnail-left" href="#" ng-click="openshowrecipeModal(zimmy._id);">
                     <img ng-src="{{zimmy.complete_photo}}" style="height:inherit;!important;">
 
                     <h2>{{zimmy.title}}</h2>
-                    <h4>작성자 : {{zimmy.nick_name}}</h4>
+                    <h4>작성자 : {{zimmy.w_cooker.nick_name}}</h4>
                     <p>{{zimmy.desc}}</p>
                 </a>
             </div>
+            <ion-infinite-scroll
+                    on-infinite="loadmoreCookEvent()"
+                    spinner="bubbles"
+                    distance="1%">
+            </ion-infinite-scroll>
         </ion-scroll>
 </ion-content>
 </ion-view>
