@@ -5,25 +5,33 @@
             <!--complete step header-->
             <div class="list card showcookCard">
                 <ion-header-bar class="bar-assertive">
-                    <button class="button icon-left ion-arrow-left-c button-clear" ng-click="closeModal()"></button>
+                    <button class="button icon-left ion-ios-arrow-thin-left button-clear" ng-click="closeModal()"></button>
                     <h1 class="title">{{current_cook.title}}</h1>
-                    <button class="button icon-left ion-ios-book button-clear" ng-click="addZimmy()"></button>
+                    <button class="button icon-left button-clear"
+                            ng-class="{true: 'ion-android-star', false: 'ion-android-star-outline'}[is_zimmy]"
+                            ng-click="manageZimmy()">
+                    </button>
                 </ion-header-bar>
 
 
                 <ion-content delegate-handle="mainScroll" padding="true" has-footer="true">
                     <ion-list>
-                        <a class="item item-avatar avatar_div">
-                            <!--<img class="avatar_img" ng-src={{cook.w_cooker_info.cooker_photo.path}}>-->
-                            <img class="avatar_img" src="img/ionic.png">
-                            <span>{{current_cook.w_cooker.nick_name}}</span>
-                        </a>
+
+                        <!--모달에서 user페이지로 가기 때문에 user페이지에서 뒤로가기를 눌러도 다시 쿡 모달로 돌아가지 않는다.
+                        애들한테 얘기해볼 것-->
+
+                        <!--<a class="item item-avatar avatar_div" ng-click="gouserstateincookModal()" href="#/tab/user/{{current_cook.w_cooker._id}}">
+                            <img src="img/nick.jpg">
+                            <h2 style="font-size:15px; font-weight: bold; color:slategrey">{{current_cook.w_cooker.nick_name}}</h2>
+                            <h4 style="font-size:12px; padding-top:5px;">{{current_cook.w_cooker.state_comment}}</h4>
+                        </a>-->
                         <div class="item item-image"  style="width:100%; height:300px;">
                             <!--<img ng-src={{current_cook.complete_photo}}>-->
                             <img src="img/food3.jpg">
                         </div>
                         <div class="tag_div">
-                            <button class="button button-small button-clear button-positive tag_button" ng-repeat="tag in current_cook.tags">
+                            <button class="button button-small button-clear button-positive tag_button"
+                                    ng-repeat="tag in current_cook.tags" ng-click="tag_clicked(tag.tag_name)">
                                 #{{tag.tag_name}}
                             </button>
                         </div>
@@ -66,16 +74,20 @@
                 <ion-header-bar class="bar-assertive">
                     <button class="button icon-left ion-arrow-left-c button-clear" ng-click="closeModal()"></button>
                     <h1 class="title">{{current_cook.title}}</h1>
-                    <button class="button icon-left ion-ios-book button-clear"></button>
+                    <button class="button icon-left button-clear"
+                            ng-class="{true: 'ion-android-star', false: 'ion-android-star-outline'}[is_zimmy]"
+                            ng-click="manageZimmy()">
+                    </button>
                 </ion-header-bar>
 
                 <!--steps showcookBody-->
                 <ion-content delegate-handle="mainScroll" padding="true" has-footer="true">
                     <ion-list>
-                        <a class="item item-avatar avatar_div">
-                            <img class="avatar_img" src="img/ionic.png">
-                            <span>{{current_cook.w_cooker.nick_name}}</span>
-                        </a>
+                        <!--<a class="item item-avatar avatar_div" ng-click="gouserstateincookModal()" href="#/tab/user/{{current_cook.w_cooker._id}}">
+                            <img src="img/nick.jpg">
+                            <h2 style="font-size:15px; font-weight: bold; color:slategrey">{{current_cook.w_cooker.nick_name}}</h2>
+                            <h4 style="font-size:12px; padding-top:5px;">{{current_cook.w_cooker.state_comment}}</h4>
+                        </a>-->
                         <div class="item item-image"  style="width:100%; height:300px;">
                             <img ng-src={{step.photo}}>
                         </div>
