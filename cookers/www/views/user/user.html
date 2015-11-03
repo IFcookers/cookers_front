@@ -75,11 +75,11 @@
         <ion-scroll direction="y" style="margin:auto;!important;height:250px!important;width: 90% !important;"
                     ng-if="mycook_zimmy == 'mycook'">
 
-            <!--<div ng-if="cooker_profile.my_cook.length == 0" class="card">
+            <div ng-if="cooker_profile.my_cook.length == 0" class="card">
                 <div style="text-align:center;">
                     <img src="img/nomycook.png" style="width:50%;height:50%">
                 </div>
-            </div>-->
+            </div>
 
             <div class="card" ng-repeat="mycook in cooker_mycook | limitTo : cooker_mycook_count"
                  style="height:80px;!important;margin-top:0px;!important;">
