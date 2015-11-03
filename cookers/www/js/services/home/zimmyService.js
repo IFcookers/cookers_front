@@ -1,31 +1,27 @@
 /**
- * Created by kimsungwoo on 2015. 10. 27..
+ * Created by kimsungwoo on 2015. 10. 31..
  */
 angular.module('cookers.services')
-    .factory('searchService',[
+    .factory('zimmyService',[
         '$http',
         '$q',
         'cookers_config',
         function($http, $q, cookers_config) {
+            /**
+             * function zimmydataHttpRequest(cook_id)
+             * 사용자가 찜한 cook을 cook model에 저장
+             */
 
             var address = cookers_config.url;
-            var search = {};
-            search.searchautocompleteHttpRequest= function(search_param){
+            var zimmy = {};
+            zimmy.zimmydataHttpRequest= function(zimmyData){
 
-                /**
-                 * function searchautocompleteHttpRequest(search_param)
-                 *  --> 검색의 자동완성 요청 메서드
-                 * search_param : {
-                 *      type : String (tag, cook, cookers),
-                 *      search_text : String
-                 * }
-                 */
                 var defer = $q.defer();
                 $http({
-                    url:address+"/rest/search",
-                    /*url: "http://localhost:3000/rest/search",*/
+                    url:address+"/rest/cooks/cookSteps/zimmy",
+                    /*url: "http://localhost:3000/rest/cooks/cookSteps/yummy",*/
                     method: 'POST',
-                    data: search_param
+                    data: zimmyData
                 }).success(function (data, status, headers, config) {
                     defer.resolve(data);
                 }).error(function (data, status, headers, config) {
@@ -34,23 +30,22 @@ angular.module('cookers.services')
 
                 return defer.promise;
             };
-            return search;
+            return zimmy;
         }])
-    .factory('searchbytagService',[
+    .factory('checkmyzimmyService',[
         '$http',
         '$q',
         'cookers_config',
         function($http, $q, cookers_config) {
-
             var address = cookers_config.url;
-            var tag_search = {};
-
-            tag_search.getsearchresultbyTag= function(tag_param){
+            var zimmy = {};
+            zimmy.checkzimmyHttpRequest= function(requestzimmyData){
 
                 var defer = $q.defer();
                 $http({
-                    url:address+"/rest/search/tagsearch/" + tag_param,
-                    method: 'POST'
+                    url:address+"/rest/cooks/cookSteps/checkmyZimmy",
+                    method: 'POST',
+                    data: requestzimmyData
                 }).success(function (data, status, headers, config) {
                     defer.resolve(data);
                 }).error(function (data, status, headers, config) {
@@ -59,5 +54,5 @@ angular.module('cookers.services')
 
                 return defer.promise;
             };
-            return tag_search;
+            return zimmy;
         }]);

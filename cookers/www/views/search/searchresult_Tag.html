@@ -1,32 +1,12 @@
 <ion-view title="Cookers">
-    <ion-header-bar class="bar bar-subheader bar-light" style="padding-left:0px; padding-right:0px;">
-        <div class="button-bar">
-            <a class="button button-clear button-assertive"
-               ng-class="{'curr_active': isActive('tag')}" ng-click="setActive('tag')">tag</a>
-            <a class="button button-clear button-assertive"
-               ng-class="{'curr_active': isActive('cook')}" ng-click="setActive('cook')">cook</a>
-            <a class="button button-clear button-assertive"
-               ng-class="{'curr_active': isActive('cookers')}" ng-click="setActive('cookers')">cookers</a>
-        </div>
-        <div ng-show="search_input" class="item item-input-inset">
-            <label class="item-input-wrapper">
-                <i class="icon ion-search placeholder-icon"></i>
-                <input ng-change="search()" ng-model="search_text" type="text" placeholder="{{search_type}}">
-            </label>
-        </div>
+    <ion-header-bar align-title="left" class="bar bar-subheader bar-light">
+        <!--<span style="font-weight: bold; padding-top:0px; font-size:15px;">#{{tag_keyword}}</span>-->
+        <h1 class="title" style="font-weight: bold; color:slategrey;">
+            #{{tag_keyword}} 검색결과
+        </h1>
     </ion-header-bar>
-
-    <ion-content padding="false" style="top:132px;">
-        <!--tag ion list-->
-        <ion-list ng-show="tag_show">
-            <a class="item" ng-repeat="tag in tag_counts | orderBy:'-count'" ng-click="gotagsearchResult(tag.tag_name)" style="font-size:15px; font-weight: bold; color:slategrey">
-                #{{tag.tag_name}}
-                <span class="item-note badge badge-assertive">{{tag.count}}</span>
-            </a>
-        </ion-list>
-
-        <!--cook ion list-->
-        <ion-list ng-show="cook_show">
+    <ion-content padding="false">
+        <ion-list>
             <div class="list card" ng-repeat="cook in cook_list  | limitTo : cook_count ">
                 <a class="item item-avatar" href="#/tab/user/{{cook.w_cooker._id}}">
                     <!--<img class="avatar_img" ng-src={{cook.w_cooker_info.cooker_photo.path}}>-->
@@ -57,16 +37,5 @@
             </div>
 
         </ion-list>
-
-        <!--cookers ion list-->
-        <ion-list ng-show="cookers_show">
-            <a class="item item-avatar" ng-repeat="cooker in cookers_list" href="#/tab/user/{{cooker._id}}">
-                <img src="img/nick.jpg">
-                <h2 style="font-size:15px; font-weight: bold; color:slategrey">{{cooker.nick_name}}</h2>
-                <h4 style="font-size:12px; padding-top:5px;">{{cooker.state_comment}}</h4>
-            </a>
-        </ion-list>
-
-
     </ion-content>
 </ion-view>

@@ -7,19 +7,26 @@ angular.module('cookers.controllers')
         '$ionicModal',
         '$ionicLoading',
         '$timeout',
+        '$state',
         'cookstepService',
         'currentinfoService',
         'userinfoService',
         'yummyService',
+        'zimmyService',
         'cookmodelManage',
         'checkmyyummyService',
-        function($scope, $ionicModal, $ionicLoading, $timeout, cookstepService, currentinfoService,
-                 userinfoService, yummyService, cookmodelManage, checkmyyummyService) {
+        'checkmyzimmyService',
+        'tagkeywordService',
+        function($scope, $ionicModal, $ionicLoading, $timeout, $state,cookstepService, currentinfoService,
+                 userinfoService, yummyService, zimmyService, cookmodelManage, checkmyyummyService,
+                 checkmyzimmyService, tagkeywordService) {
 
             $scope.current_cook={};
             $scope.cook_id = currentinfoService.get_currentcook_id();
             $scope.myProfile = userinfoService.getuserInfo().cooker_profile;
             $scope.yummyCheck = false;
+            $scope.is_zimmy = false;
+
 
             /**
              * 현재 컨트롤러는 모달의 컨트롤러이기 때문에 resolve 사용 불가능.
@@ -41,31 +48,48 @@ angular.module('cookers.controllers')
                  */
 
                 $scope.current_cook = data[0];
-                $scope.yummy_count = $scope.current_cook.yummy.cookers.length;
+                /*$scope.yummy_count = $scope.current_cook.yummy.cookers.length;*/
                 $scope.reply_count = $scope.current_cook.reply.cookers.length
 
 
                 var checkData = {};
-
                 checkData.cooker_yummy_id = $scope.myProfile.yummy;
                 checkData.cook_id = $scope.cook_id;
 
 
-                checkmyyummyService.checkyummyHttpRequest(checkData).then(function(data){
+                /*checkmyyummyService.checkyummyHttpRequest(checkData).then(function(data){
                     $scope.yummyCheck = data;
                     if(!$scope.yummyCheck){
-                        /**
+                        /!**
                          * false --> 목록에 없음. 비활성화
-                         */
+                         *!/
                         $scope.yummyclickedStyle = {'color':'inherit'};
                     } else {
-                        /**
+                        /!**
                          * false --> 목록에 있음. 활성화
-                         */
+                         *!/
                         $scope.yummyclickedStyle = {'color':'deepskyblue'};
                     }
+                });*/
+
+                $scope.check_zimmy_data = {};
+                $scope.check_zimmy_data.cook_id = $scope.cook_id;
+                $scope.check_zimmy_data.cooker_id = $scope.myProfile._id;
+
+                checkmyzimmyService.checkzimmyHttpRequest($scope.check_zimmy_data).then(function(data){
+                    if(data){
+                        $scope.is_zimmy = true;
+                    } else {
+                        $scope.is_zimmy = false;
+                    }
                 });
+
             });
+
+            /*$scope.gouserstateincookModal = function(){
+                $scope.modal.hide();
+            }*/
+
 
             $scope.yummyClicked = function(){
 
@@ -101,8 +125,32 @@ angular.module('cookers.controllers')
                 });
             }
 
-            $scope.addReply = function(){
+            $scope.manageZimmy = function(){
 
+                zimmyService.zimmydataHttpRequest($scope.check_zimmy_data);
+
+                if($scope.is_zimmy){
+                    $scope.is_zimmy = false;
+                    $ionicLoading.show({
+                        showBackdrop: false,
+                        template : 'ZIMMY 목록에서 삭제되었습니다'
+                    });
+                    $timeout(function () {
+                        $ionicLoading.hide();
+                    }, 1500);
+                } else {
+                    $scope.is_zimmy = true;
+                    $ionicLoading.show({
+                        showBackdrop: false,
+                        template : 'ZIMMY 목록에 추가되었습니다'
+                    });
+                    $timeout(function () {
+                        $ionicLoading.hide();
+                    }, 1500);
+                }
+            }
+
+            $scope.addReply = function(){
                 /**
                  * 모달 초기화 함수.
                  */
@@ -124,17 +172,21 @@ angular.module('cookers.controllers')
 
                     $scope.modal.show();
                 }, 1000);
-
             }
 
-            $scope.addZimmy = function(){
-                $ionicLoading.show({
-                    showBackdrop: false,
-                    template : 'Zimmy에 추가되었습니다!!'
-                });
+            $scope.tag_clicked = function(tag_name){
+                console.log(tag_name);
 
-                $timeout(function () {
-                    $ionicLoading.hide();
-                }, 2000);
+                /**
+                 * 태그를 검색 한 후 자동완성된 키워드를 터치하면
+                 * 해당 키워드의 태그가 포함된 레시피 목록을 보여줌.
+                 */
+
+
+                $scope.modal.hide();
+
+
+                tagkeywordService.set_tagKeyword(tag_name);
+                $state.go('tabs.searchresult_Tag',{tag:tag_name});
             }
         }]);
