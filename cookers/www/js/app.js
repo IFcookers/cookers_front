@@ -131,23 +131,32 @@ angular.module('cookers', [
                 }
             })
 
-            .state('tabs.searchresult_foodAndTag', {
-                url: '/searchresult_foodAndTag',
+            .state('tabs.searchresult_Tag', {
+                url: '/searchresult_Tag/:tag',
                 views:{
                     'search-tab': {
-                        templateUrl : 'views/search/searchresult_foodAndTag.html'
+                        templateUrl : 'views/search/searchresult_Tag.html',
+                        controller : "searchresulttagCtrl"
                     }
+                },
+                resolve:{
+                    searchresultlist : ['searchbytagService', '$stateParams',
+                        function(searchbytagService, $stateParams){
+                            return searchbytagService.getsearchresultbyTag($stateParams.tag).then(function(data){
+                                return data;
+                            })
+                    }]
                 }
             })
 
-            .state('tabs.searchresult_user', {
+            /*.state('tabs.searchresult_user', {
                 url: '/searchresult_user',
                 views:{
                     'search-tab': {
                         templateUrl : 'views/search/searchresult_user.html'
                     }
                 }
-            })
+            })*/
 
             .state('tabs.cooksummary', {
                 url: '/cooksummary',
@@ -217,7 +226,7 @@ angular.module('cookers', [
                         function ($stateParams, $localStorage, cookerinfoService, cookerService, $rootScope) {
 
                             return cookerService.getcookerProfileHttpRequest($stateParams.userid).then(function (res_data) {
-
+                                console.log($stateParams.userid);
                                 cookerinfoService.setcookerInfo(res_data.cooker_profile);
                                 cookerinfoService.setcookerZimmy(res_data.cooker_zimmy);
                                 cookerinfoService.setcookerMycook(res_data.cooker_mycook);

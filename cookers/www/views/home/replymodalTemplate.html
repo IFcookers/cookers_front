@@ -1,7 +1,7 @@
 <div ng-controller="replymodalCtrl" class="modal image-modal transparent">
     <div class="card showcookCard">
         <ion-header-bar class="bar-assertive">
-            <button class="button icon-left ion-arrow-left-c button-clear" ng-click="closeModal()"></button>
+            <button class="button icon-left ion-ios-arrow-thin-left button-clear" ng-click="closeModal()"></button>
             <h1 class="title">{{cook_model.title}}</h1>
         </ion-header-bar>
 
@@ -25,13 +25,17 @@
                             {{change_date(item.date)}}
                         </div>
                         <div style="font-size:20px;">
-                            <i class="ionicons ion-android-more-vertical"></i>
+                            <!--<button class="button button-icon ion-android-more-vertical" ng-click="popover.show($event)">
+                            </button>-->
+                            <!--<span ng-click="popover.show($event)">-->
+                            <span ng-click="openmoreinfoPopover($event)">
+                                <i class="ionicons ion-android-more-vertical"></i>
+                            </span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
                             <h3 style="white-space: normal;">{{item.comment}}</h3>
-
                         </div>
                     </div>
                     <!--<h3 style="white-space: normal;"></h3>-->
@@ -44,7 +48,7 @@
         <ion-footer-bar align-title="left" class="item-input-inset">
             <label class="item-input-wrapper">
                 <i class="ionicons ion-chatbubble-working" style="color:#B9B9B9"></i>
-                <input type="text" ng-model="write_comment" placeholder="댓글 남기기">
+                <input type="text" ng-keyup="keyUpTag($event)" ng-model="write_comment" placeholder="댓글 남기기">
             </label>
             <button ng-click="apply_comment()" class="button button-outline button-assertive">
                 등록

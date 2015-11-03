@@ -10,7 +10,7 @@
         <!--ion-refresher end-->
 
         <!--repeart part start-->
-        <div class="list card" ng-repeat="cook in cook_list  | limitTo : cook_count ">
+        <div class="list card" ng-repeat="cook in cook_list  | limitTo : cook_count">
             <a class="item item-avatar avatar_div" href="#/tab/user/{{cook.w_cooker._id}}">
                 <!--<img class="avatar_img" ng-src={{cook.w_cooker_info.cooker_photo.path}}>-->
                 <img src="img/nick.jpg">
@@ -42,9 +42,10 @@
 
         <!--ion-infinite-scroll start-->
         <ion-infinite-scroll
+            ng-if="moreDataCanBeLoaded"
             on-infinite="loadmorecookList()"
             spinner="android"
-            distance="2%">
+            distance="1%">
         </ion-infinite-scroll>
         <!--ion-infinite-scroll end-->
     </ion-content>

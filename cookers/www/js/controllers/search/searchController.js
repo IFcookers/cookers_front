@@ -4,9 +4,17 @@
 angular.module('cookers.controllers')
     .controller('searchCtrl',[
         '$scope',
+        '$ionicModal',
+        '$ionicLoading',
+        '$ionicSlideBoxDelegate',
+        '$timeout',
+        '$state',
         'searchService',
         'datechangeService',
-        function($scope, searchService, datechangeService) {
+        'currentinfoService',
+        'tagkeywordService',
+        function($scope, $ionicModal, $ionicLoading, $ionicSlideBoxDelegate, $timeout, $state, searchService,
+                 datechangeService, currentinfoService, tagkeywordService) {
             /*var str = 'bcde';
 
              str =str.replace(/\D+/gi,'aaa');
@@ -52,6 +60,7 @@ angular.module('cookers.controllers')
                          * cook 제목 검색
                          */
                         searchService.searchautocompleteHttpRequest(search_param).then(function(data){
+                            console.log(data);
                             $scope.cook_list = data;
                         });
 
@@ -74,6 +83,53 @@ angular.module('cookers.controllers')
                     $scope.cook_show = false;
                     $scope.cookers_show = false;
                 }
+
+            }
+
+            $scope.openshowrecipeModal = function(cook_id){
+                /**
+                 * 모달 초기화 함수.
+                 * 모달의 경우 app.js 내의 state로서 정의할 수 없다.
+                 */
+
+                /**
+                 * 아래의 서비스를 통해 cook_id를 유지시키고 서버로부터 해당 cook정보를 가져온다.
+                 */
+                currentinfoService.set_currentcook_id(cook_id);
+
+                $ionicModal.fromTemplateUrl('views/home/showcookingmodalTemplate.html', {
+                    scope: $scope,
+                    animation: 'mh-slide'
+                }).then(function(modal) {
+                    $scope.modal = modal;
+                });
+
+                $ionicLoading.show({
+                    showBackdrop: false,
+                    showDelay: 0,
+                    template : '<ion-spinner icon="lines" class="spinner-energized"></ion-spinner>'
+                });
+
+                $timeout(function () {
+                    $ionicLoading.hide();
+
+                    $ionicSlideBoxDelegate.slide(0);
+                    $scope.modal.show();
+                }, 1000);
+            };
+
+            $scope.closeModal = function() {
+                $scope.modal.hide();
+            };
+
+            $scope.gotagsearchResult = function(tag_name){
+                /**
+                 * 태그를 검색 한 후 자동완성된 키워드를 터치하면
+                 * 해당 키워드의 태그가 포함된 레시피 목록을 보여줌.
+                 */
+
+                tagkeywordService.set_tagKeyword(tag_name);
+                $state.go('tabs.searchresult_Tag',{tag:tag_name});
 
             }
 
@@ -106,6 +162,4 @@ angular.module('cookers.controllers')
             $scope.change_date = function(date){
                 return datechangeService.changedate(date);
             }
-
-
         }]);
