@@ -158,6 +158,8 @@ angular.module('cookers.services')
                         tags : cook.summary[0].tags,
                         steps : tempSteps
                     }
+
+
                 },
 
                 submitCook : function(){
@@ -165,9 +167,8 @@ angular.module('cookers.services')
                     if(!cook.update_flag){
                         url = cookers_config.url+"/rest/recipe/register";
                     }else{
-                        url = cookers_config.url+"/rest/recipe/modify";
+                        url = cookers_config.url+"/rest/recipe/modify/"+cook._id;
                     }
-
                     var defer = $q.defer();
                     $http({
                         url: url,
@@ -208,6 +209,10 @@ angular.module('cookers.services')
                 },
                 getuserinfo : function(){
                     return userinfoService.getuserInfo().cooker_profile._id;
+                },
+
+                setCook : function(new_cook){
+                    cook = new_cook;
                 }
 
 

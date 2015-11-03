@@ -19,7 +19,8 @@ angular.module('cookers.controllers')
         '$ionicLoading',
         '$timeout',
         '$ionicSlideBoxDelegate',
-        function($scope, $localStorage, userStatus, cookerinfoService,cookerService,$state,$rootScope,$window,$ionicHistory,currentinfoService,$ionicModal,$ionicLoading,$timeout,$ionicSlideBoxDelegate){
+        'cookSummaryService',
+        function($scope, $localStorage, userStatus, cookerinfoService,cookerService,$state,$rootScope,$window,$ionicHistory,currentinfoService,$ionicModal,$ionicLoading,$timeout,$ionicSlideBoxDelegate, cookSummaryService){
 
             $scope.cooker_profile = cookerinfoService.getcookerInfo();
             $scope.cooker_zimmy = cookerinfoService.getcookerZimmy();
@@ -165,16 +166,38 @@ angular.module('cookers.controllers')
                 $scope.modal.hide();
             };
 
+            $scope.edit = function(selected_cook){
 
-            console.log($scope.cooker_mycook);
+                /**
+                 *  내가 작성 !! ! 글수정 .. setting cookSumarryService..
+                 */
+                console.log(selected_cook);
 
-            $scope.edit = function(){
-                console.log('여기로옴');
+                var steps = [];
+
+                steps.push({
+                    title : selected_cook.title,
+                    desc : selected_cook.desc,
+                    input_stuff : '',
+                    stuffs : selected_cook.stuffs,
+                    input_tag :'',
+                    tags : selected_cook.tags,
+                    photo : 'img/cooksummary.png',
+                });
+                for(var i in selected_cook.steps){
+                    steps.push(selected_cook.steps[i]);
+                }
+                steps.push({
+                            plus_button : true
+                });
+                var edit_cook = {
+                    _id : selected_cook._id,
+                    summary : steps,
+                    update_flag : true
+                }
+
+                cookSummaryService.setCook(edit_cook);
+                $state.go('tabs.cooksummary');
             };
-
-
-
-
-
         }
     ]);
