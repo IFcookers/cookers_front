@@ -25,8 +25,6 @@ angular.module('cookers.controllers')
             $scope.cooker_zimmy = cookerinfoService.getcookerZimmy();
             $scope.cooker_mycook = cookerinfoService.getcookerMycook();
 
-
-
             /**
              * userStatus => false -> 다른 유저 보기
              * userStatus => true -> 같은 유저 보기
@@ -167,6 +165,12 @@ angular.module('cookers.controllers')
                 $scope.modal.hide();
             };
 
+
+            console.log($scope.cooker_mycook);
+
+            $scope.edit = function(){
+                console.log('여기로옴');
+            };
 
 
 

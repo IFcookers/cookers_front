@@ -18,7 +18,7 @@
 
             <ion-item class="item-avatar" ng-repeat="follow_list in cooker_follow_list">
 
-                <img ng-src="{{follow_list.cooker_photo}}">
+                <img ng-src="{{follow_list.cooker_photo == '' ? 'img/chef31.png' : follow_list.cooker_photo}}">
                 <h2 style="color:dimgray;margin-top:7px;">{{follow_list.nick_name}}</h2>
 
                 <ion-option-button class="button-calm"

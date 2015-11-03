@@ -75,22 +75,28 @@
         <ion-scroll direction="y" style="margin:auto;!important;height:250px!important;width: 90% !important;"
                     ng-if="mycook_zimmy == 'mycook'">
 
-            <div ng-if="cooker_profile.my_cook.length == 0" class="card">
+            <!--<div ng-if="cooker_profile.my_cook.length == 0" class="card">
                 <div style="text-align:center;">
                     <img src="img/nomycook.png" style="width:50%;height:50%">
                 </div>
-            </div>
+            </div>-->
 
             <div class="card" ng-repeat="mycook in cooker_mycook | limitTo : cooker_mycook_count"
                  style="height:80px;!important;margin-top:0px;!important;">
+                <div class="row">
+                    <div class="col-90">
+                        <a class="item item-thumbnail-left" href="#" ng-click="openshowrecipeModal(mycook._id)">
+                            <img ng-src="{{mycook.complete_photo}}" style="height:inherit;!important;">
 
-                <a class="item item-thumbnail-left" href="#" ng-click="openshowrecipeModal(mycook._id)">
-                    <img ng-src="{{mycook.complete_photo}}" style="height:inherit;!important;">
+                            <h2>{{mycook.title}}</h2><br>
 
-                    <h2>{{mycook.title}}</h2><br>
-
-                    <p>{{mycook.desc}}</p>
-                </a>
+                            <p>{{mycook.desc}}</p>
+                        </a>
+                    </div>
+                    <div class="col-10" style="padding-top:5px;">
+                        <i style="color:black;font-size: 20px;" class="icon ion-wand placeholder-icon" ng-click="edit()"></i>
+                    </div>
+                </div>
             </div>
             <ion-infinite-scroll
                     on-infinite="loadmoreCookEvent()"

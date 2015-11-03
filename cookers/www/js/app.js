@@ -29,8 +29,6 @@ angular.module('cookers', [
             $ionicPlatform.offHardwareBackButton(function(){
 
             });
-
-
             $ionicPlatform.ready(function () {
                 // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
                 // for form inputs)
@@ -94,7 +92,7 @@ angular.module('cookers', [
                 },
                 'responseError': function (rejection) {
                     if (rejection.status === 401) {
-                        console.log('401 error ');
+
                         $rootScope.$broadcast('signoutEvent');
 
                     }

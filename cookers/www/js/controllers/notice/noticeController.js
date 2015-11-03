@@ -18,7 +18,7 @@ angular.module('cookers.controllers')
             $scope.notices = noticeService.getNotices();
             $scope.$on('notice_reset',function(){
                 $scope.notices = noticeService.getNotices();
-            })
+            });
 
 
             /**
