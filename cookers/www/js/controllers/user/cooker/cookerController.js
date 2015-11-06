@@ -167,12 +167,7 @@ angular.module('cookers.controllers')
             };
 
             $scope.edit = function(selected_cook){
-
-                /**
-                 *  내가 작성 !! ! 글수정 .. setting cookSumarryService..
-                 */
                 console.log(selected_cook);
-
                 var steps = [];
 
                 steps.push({
@@ -197,6 +192,7 @@ angular.module('cookers.controllers')
                 }
 
                 cookSummaryService.setCook(edit_cook);
+                cookSummaryService.setOriginCook();
                 $state.go('tabs.cooksummary');
             };
         }

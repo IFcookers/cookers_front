@@ -9,9 +9,13 @@ angular.module('cookers.services')
             /**
              * cook : cookSummary, cookStepGallery, inputDetailStep 에서 사용되는 객체.
              * httpCook : $http 모듈 이용해 서버에 데이터 보낼때 사용되는 객체.
+             * originCook : http cook과 비교를 위한 객체. 초기 설정값이 그대로 들어가 있음.
+             * httpEditCook : originCook, httpCook 비교 후 바뀐 데이터있는지 확인 후 데이터 세팅.
              */
             var cook = {};
             var httpCook = {};
+            var originCook = {};
+            var httpEditCook = {};
             var initImage = 'img/food3.jpg';
             var init = function(){
                 cook = {
@@ -33,6 +37,13 @@ angular.module('cookers.services')
             }
             init();
 
+            /**
+             * stringValidationCheck
+             * tagValidationCheck
+             * stepValidationCheck
+             *
+             * 위 3개의 메서드는 모두 validation check를 위한 메서드.
+             */
             var stringValidationCheck = function(property, title){
                 if(property ==undefined || property.trim()==''){
                     alert(title+"을 입력해주세요.");
@@ -62,6 +73,7 @@ angular.module('cookers.services')
                 }
                 return false;
             }
+
 
             return {
                 init : function(){
@@ -141,14 +153,18 @@ angular.module('cookers.services')
                 },
 
                 setHttpCook : function(){
+                    httpCook = {};
+
                     var tempSteps = [];
                     for(var i = 1 ; i < cook.summary.length-1; i++){
+
                         tempSteps.push({
-                            step : i,
+                            _id : cook.summary[i]._id,
                             photo : '',
                             content : cook.summary[i].content
                         });
                     }
+
 
                     httpCook = {
                         w_cooker : userinfoService.getuserInfo().cooker_profile._id,
@@ -161,12 +177,7 @@ angular.module('cookers.services')
                 },
 
                 submitCook : function(){
-                    var url = '';
-                    if(!cook.update_flag){
-                        url = cookers_config.url+"/rest/recipe/register";
-                    }else{
-                        url = cookers_config.url+"/rest/recipe/modify/"+cook._id;
-                    }
+                    var url = cookers_config.url+"/rest/recipe/register";
 
                     var defer = $q.defer();
                     $http({
@@ -182,12 +193,13 @@ angular.module('cookers.services')
 
                 },
 
-                submitPhoto : function(_id){
+                submitPhoto : function(_id, steps){
                     var tempSteps = [];
                     for(var i = 1 ; i < cook.summary.length-1; i++){
                         tempSteps.push({
+                            fileName : steps[i-1]._id,
                             step : i,
-                            photo : cook.summary[i].photo,
+                            photo : cook.summary[i].photo
                         });
                     }
 
@@ -206,15 +218,191 @@ angular.module('cookers.services')
                     return defer.promise;
 
                 },
-                getuserinfo : function(){
-                    return userinfoService.getuserInfo().cooker_profile._id;
+
+                submitFail : function(cook_id, yummy_id, reply_id){
+                    $http({
+                        url: url + cook_id+ "/"+ yummy_id+ "/"+ reply_id,
+                        method: 'POST',
+                        data : tempSteps
+                    }).success(function (data, status, headers, config) {
+                        defer.resolve(data);
+                    }).error(function (data, status, headers, config) {
+                        defer.resolve(data);
+                    });
+                    return defer.promise;
                 },
 
                 setCook : function(new_cook){
                     cook = new_cook;
+                },
+
+                getHttpCook : function(){
+                    return httpCook;
+                },
+
+                setOriginCook : function(){
+                    originCook = {};
+
+                    var tempSteps = [];
+                    for(var i = 1 ; i < cook.summary.length-1; i++){
+                        tempSteps.push({
+                            _id : cook.summary[i]._id,
+                            photo : cook.summary[i].photo,
+                            content : cook.summary[i].content
+                        });
+                    }
+
+                    originCook = {
+                        w_cooker : userinfoService.getuserInfo().cooker_profile._id,
+                        title : cook.summary[0].title,
+                        desc : cook.summary[0].desc,
+                        stuffs : cook.summary[0].stuffs.slice(0),
+                        tags : cook.summary[0].tags.slice(0),
+                        steps : tempSteps
+                    }
+                },
+
+                getOriginCook : function(){
+                    return originCook;
+                },
+
+                compareOriginHttpCook : function(){
+                    /**
+                     * 비교 전, httpEditCook 초기화.
+                     */
+                    httpEditCook = {};
+                    /**
+                     * 두객체 비교후 httpEditCook setting
+                     */
+                    var changedCondition = false;
+
+                    if(originCook.title.trim() != httpCook.title.trim()){
+                        httpEditCook["title"] = httpCook.title.trim();
+                        changedCondition = true;
+                    }
+
+                    if(originCook.desc.trim() != httpCook.desc.trim()){
+                        httpEditCook["desc"] = httpCook.desc.trim();
+                        changedCondition = true;
+                    }
+
+                    if(originCook.stuffs.length != httpCook.stuffs.length){
+                        httpEditCook["stuffs"] = httpCook.stuffs;
+                        httpEditCook["stuff_quantity"] = httpEditCook.stuffs.length;
+                        changedCondition = true;
+                    }else{
+                        var i;
+                        for( i in originCook.stuffs){
+                            if(originCook.stuffs[i].stuff_name.trim() != httpCook.stuffs[i].stuff_name.trim()){
+                                break;
+                            }
+                        }
+                        if(i < originCook.stuffs.length-1){
+                            httpEditCook["stuffs"] = httpCook.stuffs.trim();
+                            changedCondition = true;
+                        }
+                    }
+
+                    if(originCook.tags.length != httpCook.tags.length){
+                        httpEditCook["tags"] = httpCook.tags;
+                        changedCondition = true;
+                    }else{
+                        var i;
+                        for( i in originCook.tags){
+                            if(originCook.tags[i].tag_name.trim() != httpCook.tags[i].tag_name.trim()){
+                                break;
+                            }
+                        }
+                        if(i = originCook.tags.length-1){
+                            httpEditCook["tags"] = httpCook.tags;
+                            changedCondition = true;
+                        }
+                    }
+
+                    if(originCook.steps.length != httpCook.steps.length){
+                        httpEditCook["steps"] = httpCook.steps;
+                        changedCondition = true;
+                    }else{
+                        var i;
+                        for( i in originCook.steps ){
+                            if(originCook.steps[i].content != httpCook.steps[i].content || originCook.steps[i].photo != httpCook.steps[i].photo ){
+                                break;
+                            }
+                        }
+                        if(i < originCook.steps.length-1){
+                            httpEditCook["steps"] = httpCook.steps;
+
+                            changedCondition = true;
+                        }
+                    }
+                    return changedCondition;
+                },
+
+                getHttptEditCook : function(){
+                    return httpEditCook;
+                },
+
+                submitEditCook : function(){
+                    var url = cookers_config.url+"/rest/recipe/modify/"+cook._id;
+
+                    var defer = $q.defer();
+                    $http({
+                        url: url,
+                        method: 'POST',
+                        data : httpEditCook
+                    }).success(function (data, status, headers, config) {
+                        defer.resolve(data);
+                    }).error(function (data, status, headers, config) {
+                        defer.resolve(data);
+                    });
+                    return defer.promise;
+
+                },
+
+                addOriginPhotoNameInHttpEditCook : function(){
+                    httpEditCook.origin_step_ids = [];
+                    for(var i in originCook.steps){
+                        httpEditCook.origin_step_ids[i]= originCook.steps[i]._id;
+                    }
+                },
+
+                submitEditPhoto : function(current_id_arrays, removes, skips){
+                    var editPhoto = {
+                        removes : removes
+                    };
+
+                    var tempSteps = [];
+                    ;
+                    for(var i = 1 ; i < cook.summary.length-1; i++){
+                        if(skips.length>0){
+                            if(skips[0] == i-1){
+                                skips.splice(0,1);
+                                continue;
+                            }
+                        }
+                        tempSteps.push({
+                            fileName : current_id_arrays[i-1],
+                            step : i,
+                            photo : cook.summary[i].photo
+                        });
+                    }
+
+                    editPhoto.steps = tempSteps;
+
+                    var url = cookers_config.url+'/rest/photo/upload/edit/'+cook._id;
+
+                    var defer = $q.defer();
+                    $http({
+                        url: url,
+                        method: 'POST',
+                        data : editPhoto
+                    }).success(function (data, status, headers, config) {
+                        defer.resolve(data);
+                    }).error(function (data, status, headers, config) {
+                        defer.resolve(data);
+                    });
+                    return defer.promise;
                 }
-
-
             }
         }
     ]);
