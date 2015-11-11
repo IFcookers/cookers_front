@@ -10,11 +10,10 @@ angular.module('cookers.controllers')
         '$timeout',
         '$state',
         'searchService',
-        'datechangeService',
         'currentinfoService',
         'tagkeywordService',
         function($scope, $ionicModal, $ionicLoading, $ionicSlideBoxDelegate, $timeout, $state, searchService,
-                 datechangeService, currentinfoService, tagkeywordService) {
+                 currentinfoService, tagkeywordService) {
             /*var str = 'bcde';
 
              str =str.replace(/\D+/gi,'aaa');
@@ -158,8 +157,4 @@ angular.module('cookers.controllers')
             $scope.isActive = function(type) {
                 return type === $scope.active;
             };
-
-            $scope.change_date = function(date){
-                return datechangeService.changedate(date);
-            }
         }]);

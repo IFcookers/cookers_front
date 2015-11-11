@@ -25,6 +25,8 @@
 
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/X.Y.Z/angular-sanitize.js"></script>-->
+
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="lib/external/ngCordova/ng-cordova.min.js"></script>
@@ -77,8 +79,8 @@
 <script src="js/controllers/user/sign/signController.js"></script>
 <script src="js/controllers/home/homeController.js"></script>
 <script src="js/controllers/home/showcookingmodalController.js"></script>
+<script src="js/controllers/home/showsummaryController.js"></script>
 <script src="js/controllers/home/replymodalController.js"></script>
-<script src="js/controllers/home/tagpopoverController.js"></script>
 <script src="js/controllers/search/searchController.js"></script>
 <script src="js/controllers/search/searchresulttagController.js"></script>
 <script src="js/controllers/user/cooker/cookerController.js"></script>
@@ -102,7 +104,7 @@
 <script src="js/services/home/yummyService.js"></script>
 <script src="js/services/home/zimmyService.js"></script>
 <script src="js/services/home/replyService.js"></script>
-<script src="js/services/home/datechangeService.js"></script>
+<script src="js/services/home/focusService.js"></script>
 <script src="js/services/search/searchService.js"></script>
 <script src="js/services/search/tagkeywordService.js"></script>
 
@@ -119,9 +121,12 @@
 
 <!--directives-->
 <script src="js/directives/timeDirective.js"></script>
-
+<script src="js/directives/dynamic.js"></script>
 <script src="js/directives/ionmdinputDirective.js"></script>
-<script src="js/directives/passwordcheckDirective.js"></script>
+
+
+<!--filters-->
+<script src="js/filters/tagchangeFilter.js"></script>
 
 <!--external Library-->
 <script src="lib/external/ngImgCrop/ng-img-crop.js"></script>
