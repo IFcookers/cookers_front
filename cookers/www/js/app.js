@@ -205,7 +205,6 @@ angular.module('cookers', [
                             console.log("notice-resolve : " + $localStorage.id );
                             return noticeService.getNoticeListHttpRequest($localStorage.id)
                                 .then(function(data){
-                                    console.log("aa");
                                     noticeService.init();
                                     noticeService.setNotices(data);
                                     $rootScope.$broadcast('notice_reset');

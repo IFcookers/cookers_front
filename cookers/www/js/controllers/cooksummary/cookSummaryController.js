@@ -20,7 +20,7 @@ angular.module('cookers.controllers')
              */
             $scope.kyeUpStuff = function(event){
                 if(event.keyCode===13 || event.keyCode===188){
-                    $scope.cook.inputStuff = $scope.cook.inputStuff.replace(/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi,'');
+                    if($scope.cook.inputStuff.trim()=="") return;
                     $scope.cook.inputStuff = $scope.cook.inputStuff.replace(/\s+/gi,' ');
                     //$scope.cook.inputStuff = $scope.cook.inputStuff.replace(/\d[0-3]\S*/gi,'');
 
@@ -44,6 +44,7 @@ angular.module('cookers.controllers')
 
             $scope.keyUpTag = function(event){
                 if(event.keyCode===13 || event.keyCode===188 ){
+                    if($scope.cook.inputTag.trim()=="") return;
                     $scope.cook.inputTag = $scope.cook.inputTag.replace(/[\{\}\[\]\/?.,;:|\)*~`!^\-+<>@\#$%&\\\=\(\'\"]/gi,'');
                     $scope.cook.inputTag = $scope.cook.inputTag.replace(/\s*/gi,'');
 
