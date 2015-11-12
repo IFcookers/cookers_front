@@ -17,7 +17,7 @@ angular.module('cookers', [
     'ngImgCrop',
     'ngIOS9UIWebViewPatch',
     'time.directive',
-    'reply.directive'
+    'reply.directive',
 ])
     .run([
         '$ionicPlatform',

@@ -68,4 +68,30 @@ angular.module('cookers.services')
                     notices.splice(index,1);
                 }
             };
+        }])
+    .factory('noticeService',[
+        '$http',
+        '$q',
+        'cookers_config',
+        function($http, $q, cookers_config) {
+
+            var address = cookers_config.url;
+            var notice = {};
+            notice.noticeHttpRequest = function(notice_object){
+
+                var defer = $q.defer();
+                $http({
+                    url:address+"/rest/notice/save",
+                    method: 'POST',
+                    data: notice_object
+                }).success(function (data, status, headers, config) {
+                    defer.resolve(data);
+                }).error(function (data, status, headers, config) {
+                    $window.alert(data);
+                });
+
+                return defer.promise;
+            };
+            return notice;
         }]);
+

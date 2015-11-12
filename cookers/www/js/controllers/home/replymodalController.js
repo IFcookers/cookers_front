@@ -20,12 +20,17 @@ angular.module('cookers.controllers')
         'getcookeridService',
         'tagkeywordService',
         'deletereplyService',
+        'noticeService',
         function($scope, $ionicScrollDelegate, $ionicPopover, $sce, $compile, $state, $rootScope, $ionicPopup, cookmodelManage,
                  userinfoService, addreplyService, getreplyinitialdataService, searchService, focusService, getcookeridService,
-                 tagkeywordService, deletereplyService) {
+                 tagkeywordService, deletereplyService, noticeService) {
 
             $scope.myProfile = userinfoService.getuserInfo().cooker_profile;
             $scope.cook_model = cookmodelManage.get_cookmodel();
+
+            console.log($scope.myProfile);
+            console.log($scope.cook_model);
+
             var search_text = "",
                 my_regex = undefined,
                 my_regex_array = undefined;
@@ -78,6 +83,14 @@ angular.module('cookers.controllers')
                     } else {
                         $scope.comments_check = false;
                     }
+
+                    var notice = {};
+                    notice.kind_code = "R";
+                    notice.from = $scope.myProfile._id;
+                    notice.to = $scope.cook_model.w_cooker._id;
+                    notice.cook = $scope.cook_model._id;
+
+                    noticeService.noticeHttpRequest(notice);
 
                     $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
                 });

@@ -9,8 +9,29 @@ angular.module('cookers.controllers')
         function($scope, $ionicSlideBoxDelegate, cookmodelManage) {
 
             var cook_model = cookmodelManage.get_cookmodel();
+            $scope.summary_images = [];
+            var step={};
 
-            console.log(cook_model);
+            /**
+             * $scope.summary_images --> step 요약 배열
+             * 완성사진을 0번째로 삽입하고
+             * step의 순서대로 차례차례 push
+             */
+
+            var first_step = {};
+            first_step.num = 0;
+            first_step.image = cook_model.complete_photo;
+
+            $scope.summary_images.push(first_step);
+
+            for(var i=1; i <= cook_model.steps.length; i++){
+                step.num = i;
+                step.image = cook_model.steps[i-1].photo;
+
+                $scope.summary_images.push(step);
+
+                step = {};
+            }
 
             $scope.gotoslide = function(param){
                 $ionicSlideBoxDelegate.slide(param);
