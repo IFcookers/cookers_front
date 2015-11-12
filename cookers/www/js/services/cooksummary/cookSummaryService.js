@@ -24,9 +24,9 @@ angular.module('cookers.services')
                     summary : [{
                         title : '',
                         desc : '',
-                        input_stuff : '',
+                        inputStuff : '',
                         stuffs : [],
-                        input_tag : '',
+                        inputTag : '',
                         tags : [],
                         photo : 'img/cooksummary.png'
                     },
