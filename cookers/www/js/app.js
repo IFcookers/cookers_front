@@ -202,13 +202,13 @@ angular.module('cookers', [
                 resolve : {
                     noticeList : ['noticeService', '$localStorage', '$rootScope',
                         function(noticeService, $localStorage, $rootScope){
-                            console.log("notice-resolve");
+                            console.log("notice-resolve : " + $localStorage.id );
                             return noticeService.getNoticeListHttpRequest($localStorage.id)
                                 .then(function(data){
+                                    console.log("aa");
                                     noticeService.init();
                                     noticeService.setNotices(data);
                                     $rootScope.$broadcast('notice_reset');
-
                                 });
                         }
                     ]
