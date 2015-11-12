@@ -69,7 +69,7 @@ angular.module('cookers.services')
                 }
             };
         }])
-    .factory('noticeService',[
+    .factory('insertnoticeService',[
         '$http',
         '$q',
         'cookers_config',

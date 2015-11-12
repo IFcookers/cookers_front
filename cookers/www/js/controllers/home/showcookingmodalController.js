@@ -18,10 +18,10 @@ angular.module('cookers.controllers')
         'checkmyyummyService',
         'checkmyzimmyService',
         'tagkeywordService',
-        'noticeService',
+        'insertnoticeService',
         function($scope, $ionicModal, $ionicLoading, $timeout, $state, $cordovaSocialSharing, cookstepService, currentinfoService,
                  userinfoService, yummyService, zimmyService, cookmodelManage, checkmyyummyService,
-                 checkmyzimmyService, tagkeywordService, noticeService) {
+                 checkmyzimmyService, tagkeywordService, insertnoticeService) {
 
             $scope.current_cook={};
             $scope.cook_id = currentinfoService.get_currentcook_id();
@@ -132,7 +132,7 @@ angular.module('cookers.controllers')
                 notice.to = $scope.current_cook.w_cooker._id;
                 notice.cook = $scope.current_cook._id;
 
-                noticeService.noticeHttpRequest(notice);
+                insertnoticeService.noticeHttpRequest(notice);
             }
 
             $scope.manageZimmy = function(){
