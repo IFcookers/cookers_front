@@ -90,7 +90,7 @@ angular.module('cookers.controllers')
                     notice.to = $scope.cook_model.w_cooker._id;
                     notice.cook = $scope.cook_model._id;
 
-                    noticeService.noticeHttpRequest(notice);
+                    insertnoticeService.noticeHttpRequest(notice);
 
                     $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
                 });
