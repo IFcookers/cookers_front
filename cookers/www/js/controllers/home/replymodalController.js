@@ -20,10 +20,10 @@ angular.module('cookers.controllers')
         'getcookeridService',
         'tagkeywordService',
         'deletereplyService',
-        'noticeService',
+        'insertnoticeService',
         function($scope, $ionicScrollDelegate, $ionicPopover, $sce, $compile, $state, $rootScope, $ionicPopup, cookmodelManage,
                  userinfoService, addreplyService, getreplyinitialdataService, searchService, focusService, getcookeridService,
-                 tagkeywordService, deletereplyService, noticeService) {
+                 tagkeywordService, deletereplyService, insertnoticeService) {
 
             $scope.myProfile = userinfoService.getuserInfo().cooker_profile;
             $scope.cook_model = cookmodelManage.get_cookmodel();
