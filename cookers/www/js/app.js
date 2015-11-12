@@ -9,12 +9,15 @@ angular.module('cookers', [
     'cookers.services',
     'cookers.directives',
     'cookers.config',
+    'cookers.filter',
     'ng.confirmField',
     'ngStorage',
     'angular-jwt',
     'ngCordova',
     'ngImgCrop',
-    'ngIOS9UIWebViewPatch'
+    'ngIOS9UIWebViewPatch',
+    'time.directive',
+    'reply.directive'
 ])
     .run([
         '$ionicPlatform',
@@ -195,8 +198,7 @@ angular.module('cookers', [
                         templateUrl: 'views/notice/notice.html',
                         controller : 'noticeCtrl'
                     }
-                }
-                ,
+                },
                 resolve : {
                     noticeList : ['noticeService', '$localStorage', '$rootScope',
                         function(noticeService, $localStorage, $rootScope){
@@ -309,3 +311,5 @@ angular.module('cookers.services', []);
 angular.module('cookers.directives', []);
 
 angular.module('cookers.config', []);
+
+angular.module('cookers.filter', []);

@@ -17,7 +17,7 @@ angular.module('cookers.controllers')
         'checkmyyummyService',
         'checkmyzimmyService',
         'tagkeywordService',
-        function($scope, $ionicModal, $ionicLoading, $timeout, $state,cookstepService, currentinfoService,
+        function($scope, $ionicModal, $ionicLoading, $timeout, $state, cookstepService, currentinfoService,
                  userinfoService, yummyService, zimmyService, cookmodelManage, checkmyyummyService,
                  checkmyzimmyService, tagkeywordService) {
 
@@ -34,7 +34,6 @@ angular.module('cookers.controllers')
              */
             cookstepService.getcookStep($scope.cook_id).then(function (data) {
 
-                console.log(data[0]);
                 /**
                  * setcook function()
                  * cookstepmodal로 들어와 서버를 통해 cook정보를 받으면 이를 set시킴.
@@ -164,13 +163,13 @@ angular.module('cookers.controllers')
                     scope: $scope
 
                 }).then(function(modal) {
-                    $scope.modal = modal;
+                    $scope.replymodal = modal;
                 });
 
                 $timeout(function () {
                     $ionicLoading.hide();
 
-                    $scope.modal.show();
+                    $scope.replymodal.show();
                 }, 1000);
             }
 
@@ -182,11 +181,32 @@ angular.module('cookers.controllers')
                  * 해당 키워드의 태그가 포함된 레시피 목록을 보여줌.
                  */
 
-
-                $scope.modal.hide();
-
+                $scope.showcookingmodal.hide();
 
                 tagkeywordService.set_tagKeyword(tag_name);
                 $state.go('tabs.searchresult_Tag',{tag:tag_name});
+            }
+
+
+            $scope.show_summary = function(){
+
+                $ionicLoading.show({
+                    showBackdrop: false,
+                    showDelay: 0,
+                    template : '<ion-spinner icon="lines" class="spinner-energized"></ion-spinner>'
+                });
+
+                $ionicModal.fromTemplateUrl('views/home/showsummaryTemplate.html', {
+                    scope: $scope
+
+                }).then(function(modal) {
+                    $scope.showsummarymodal = modal;
+                });
+
+                $timeout(function () {
+                    $ionicLoading.hide();
+
+                    $scope.showsummarymodal.show();
+                }, 1000);
             }
         }]);

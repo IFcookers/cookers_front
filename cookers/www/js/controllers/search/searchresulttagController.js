@@ -9,10 +9,9 @@ angular.module('cookers.controllers')
         '$timeout',
         '$ionicSlideBoxDelegate',
         'searchresultlist',
-        'datechangeService',
         'tagkeywordService',
         'currentinfoService',
-        function($scope, $ionicModal, $ionicLoading, $timeout, $ionicSlideBoxDelegate,  searchresultlist, datechangeService, tagkeywordService, currentinfoService) {
+        function($scope, $ionicModal, $ionicLoading, $timeout, $ionicSlideBoxDelegate,  searchresultlist, tagkeywordService, currentinfoService) {
             $scope.tag_keyword = tagkeywordService.get_tagKeyword();
             $scope.cook_list = searchresultlist;
 
@@ -52,10 +51,5 @@ angular.module('cookers.controllers')
             $scope.closeModal = function() {
                 $scope.modal.hide();
             };
-
-
-            $scope.change_date = function(date){
-                return datechangeService.changedate(date);
-            }
         }
     ]);
