@@ -4,10 +4,10 @@ angular.module('cookers.controllers')
         '$state',
         '$stateParams',
         'cookSummaryService',
-        //'cameraService',
+        'cameraService',
         '$ionicModal',
-        //function($scope, $state, $stateParams, cookSummaryService, cameraService, $ionicModal){
-        function($scope, $state, $stateParams, cookSummaryService, $ionicModal){
+        function($scope, $state, $stateParams, cookSummaryService, cameraService, $ionicModal){
+        //function($scope, $state, $stateParams, cookSummaryService, $ionicModal){
             $scope.index = parseInt($stateParams.index);
             $scope.step = cookSummaryService.getSummary($scope.index);
 
