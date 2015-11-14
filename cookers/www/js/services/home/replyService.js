@@ -23,7 +23,6 @@ angular.module('cookers.services')
                     method: 'POST',
                     data: reply_object
                 }).success(function (data, status, headers, config) {
-                    reply.getreplyData = data;
                     defer.resolve(data);
                 }).error(function (data, status, headers, config) {
                     $window.alert(data);
@@ -54,7 +53,6 @@ angular.module('cookers.services')
                     method: 'POST',
                     data: request_data
                 }).success(function (data, status, headers, config) {
-                    console.log(data);
                     defer.resolve(data);
                 }).error(function (data, status, headers, config) {
                     $window.alert(data);
@@ -63,4 +61,63 @@ angular.module('cookers.services')
                 return defer.promise;
             };
             return reply;
+        }])
+    .factory('getcookeridService',[
+        '$http',
+        '$q',
+        'cookers_config',
+        function($http, $q, cookers_config) {
+            /**
+             * function initialreplydataHttpRequest
+             * 초기 해당 cook에 대한 댓글 데이터를 가져옴
+             */
+
+            var address = cookers_config.url;
+            var get_obj = {};
+            get_obj.getcookeridbyNicknameHttpRequest = function(nick_name){
+                var defer = $q.defer();
+                $http({
+                    url:address+"/rest/cooks/cookSteps/getcookerid/"+nick_name,
+                    method: 'POST'
+                }).success(function (data, status, headers, config) {
+                    defer.resolve(data);
+                }).error(function (data, status, headers, config) {
+                    $window.alert(data);
+                });
+
+                return defer.promise;
+            };
+            return get_obj;
+        }])
+    .factory('deletereplyService',[
+        '$http',
+        '$q',
+        'cookers_config',
+        function($http, $q, cookers_config) {
+            /**
+             * function initialreplydataHttpRequest
+             * 초기 해당 cook에 대한 댓글 데이터를 가져옴
+             */
+
+            var address = cookers_config.url;
+            var delete_obj = {};
+            delete_obj.deletereplyHttpRequest = function(reply_id, reply_cookers_id){
+                var temp = {};
+                temp._id = reply_id;
+                temp.reply_cookers_id = reply_cookers_id;
+
+                var defer = $q.defer();
+                $http({
+                    url:address+"/rest/cooks/cookSteps/deletereply",
+                    method: 'POST',
+                    data : temp
+                }).success(function (data, status, headers, config) {
+                    defer.resolve(data);
+                }).error(function (data, status, headers, config) {
+                    $window.alert(data);
+                });
+
+                return defer.promise;
+            };
+            return delete_obj;
         }]);

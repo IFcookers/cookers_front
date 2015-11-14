@@ -70,48 +70,83 @@ angular.module('cookers.controllers')
              * 유효성 검사에 대한 로직.
              */
             $scope.cookSumarryComplete = function(){
-                //console.log(cookSummaryService.getuserinfo());
-                if(cookSummaryService.validationCheck()){
-                    console.log("gallery don't setting");
-                }else{
+                if(!cookSummaryService.validationCheck()){
+
                     cookSummaryService.setHttpCook();
-                    cookSummaryService.submitCook().then(function(result){
 
-                        if(result.state == 200){
+                    console.log(cookSummaryService.getHttpCook());
+                    if($scope.cook.update_flag) {
+                        /**
+                         * cook update.
+                         */
+                        if(cookSummaryService.compareOriginHttpCook()){
+                            /**
+                             * 변동사항 있을 경우 이리로 들어오게 된다.
+                             */
+                            console.log(cookSummaryService.getHttptEditCook());
+                            if(cookSummaryService.getHttptEditCook().steps != undefined){
+                                cookSummaryService.addOriginPhotoNameInHttpEditCook();
+                            }
+                            cookSummaryService.submitEditCook().then(function(result){
 
-                            cookSummaryService.submitPhoto(result._id).then(function(result){
-                                if(result.state== 200){
-                                    $ionicLoading.show({
-                                        showBackdrop: true,
-                                        showDelay: 0,
-                                        template : '<ion-spinner icon="lines" class="spinner-energized"></ion-spinner>'
-                                    });
+                                /**
+                                 * removes : 지울파일 이름
+                                 * skips : 넘어갈 파일 index
+                                 */
 
-                                    $state.go("tabs.home");
-                                }else{
+                                cookSummaryService.submitEditPhoto(result.current_steps_id, result.removes, result.skips).then(function(result){
+                                    console.log(result);
+                                });
+                            });
+                        }
+
+                        $state.go("tabs.user",{userid : cookSummaryService.getHttpCook().w_cooker});
+
+                    }else{
+                        /**
+                         * cook register.
+                         */
+                        cookSummaryService.submitCook().then(function(result){
+                            console.log(result);
+                            if(result.state == 200) {
+                                var return_cook = result;
+                                cookSummaryService.submitPhoto(return_cook._id, return_cook.steps).then(function(result){
+                                    console.log(result);
+                                    if(result.state == 200){
+                                        $ionicLoading.show({
+                                            showBackdrop: true,
+                                            showDelay: 0,
+                                            template : '<ion-spinner icon="lines" class="spinner-energized"></ion-spinner>'
+                                        });
+
+                                        $state.go("tabs.home");
+
+                                    }else{
+                                        cookSummaryService.submitFail(return_cook._id, return_cook.yummy, return_cook.reply).then(function(){
+                                            $ionicLoading.show({
+                                                showBackdrop: true,
+                                                showDelay: 2000,
+                                                template : '네트워크가 불안정합니다.'
+                                            });
+                                        });
+                                    }
+                                });
+                            }else{
+                                cookSummaryService.submitFail(return_cook._id, return_cook.yummy, return_cook.reply).then(function(){
                                     $ionicLoading.show({
                                         showBackdrop: true,
                                         showDelay: 2000,
-                                        template : '글쓰기 실패 ㅜㅜ 서버에 부하걸리나봐요.'
+                                        template : '네트워크가 불안정합니다.'
                                     });
-                                }
-                                $timeout(function () {
-                                    $ionicLoading.hide();
-                                }, 2000);
-                            });
-
-                        }else{
-                            // insert 실패
-                            $ionicLoading.show({
-                                showBackdrop: true,
-                                showDelay: 2000,
-                                template : '네트워크 상태가 불안정합니다.'
-                            });
+                                });
+                            }
                             $timeout(function () {
                                 $ionicLoading.hide();
                             }, 2000);
-                        }
-                    });
+                        });
+                    }
+
+
                 }
             }
         }

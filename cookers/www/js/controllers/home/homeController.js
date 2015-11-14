@@ -11,9 +11,8 @@ angular.module('cookers.controllers')
         'cooksService',
         'userinfoService',
         'currentinfoService',
-        'datechangeService',
         function($scope, $ionicModal, $ionicSlideBoxDelegate, $ionicLoading, $timeout, cooksService,
-                 userinfoService, currentinfoService, datechangeService) {
+                 userinfoService, currentinfoService) {
 
             $scope.cook_count = 10;
             $scope.moreDataCanBeLoaded = true;
@@ -45,7 +44,7 @@ angular.module('cookers.controllers')
                     scope: $scope,
                     animation: 'mh-slide'
                 }).then(function(modal) {
-                    $scope.modal = modal;
+                    $scope.showcookingmodal = modal;
                 });
 
                 $ionicLoading.show({
@@ -59,12 +58,12 @@ angular.module('cookers.controllers')
                     $ionicLoading.hide();
 
                     $ionicSlideBoxDelegate.slide(0);
-                    $scope.modal.show();
+                    $scope.showcookingmodal.show();
                 }, 1000);
             };
 
             $scope.closeModal = function() {
-                $scope.modal.hide();
+                $scope.showcookingmodal.hide();
             };
 
             /**
@@ -77,10 +76,6 @@ angular.module('cookers.controllers')
                     $scope.$broadcast('scroll.refreshComplete');
 
                 });
-            }
-
-            $scope.change_date = function(date){
-                return datechangeService.changedate(date);
             }
 
             /**
@@ -99,4 +94,8 @@ angular.module('cookers.controllers')
             /*$scope.$on('$stateChangeSuccess', function() {
                 $scope.loadmorecookList();
             });*/
+
+            $scope.$on('close_showcookingmodal',function(event, args){
+                $scope.showcookingmodal.hide();
+            })
         }]);

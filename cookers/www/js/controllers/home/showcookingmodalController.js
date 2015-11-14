@@ -8,6 +8,7 @@ angular.module('cookers.controllers')
         '$ionicLoading',
         '$timeout',
         '$state',
+        '$cordovaSocialSharing',
         'cookstepService',
         'currentinfoService',
         'userinfoService',
@@ -17,9 +18,10 @@ angular.module('cookers.controllers')
         'checkmyyummyService',
         'checkmyzimmyService',
         'tagkeywordService',
-        function($scope, $ionicModal, $ionicLoading, $timeout, $state,cookstepService, currentinfoService,
+        'insertnoticeService',
+        function($scope, $ionicModal, $ionicLoading, $timeout, $state, $cordovaSocialSharing, cookstepService, currentinfoService,
                  userinfoService, yummyService, zimmyService, cookmodelManage, checkmyyummyService,
-                 checkmyzimmyService, tagkeywordService) {
+                 checkmyzimmyService, tagkeywordService, insertnoticeService) {
 
             $scope.current_cook={};
             $scope.cook_id = currentinfoService.get_currentcook_id();
@@ -34,11 +36,11 @@ angular.module('cookers.controllers')
              */
             cookstepService.getcookStep($scope.cook_id).then(function (data) {
 
-                console.log(data[0]);
                 /**
                  * setcook function()
                  * cookstepmodal로 들어와 서버를 통해 cook정보를 받으면 이를 set시킴.
                  */
+                console.log(data[0]);
                 cookmodelManage.set_cookmodel(data[0]);
 
                 /**
@@ -48,7 +50,7 @@ angular.module('cookers.controllers')
                  */
 
                 $scope.current_cook = data[0];
-                /*$scope.yummy_count = $scope.current_cook.yummy.cookers.length;*/
+                $scope.yummy_count = $scope.current_cook.yummy.cookers.length;
                 $scope.reply_count = $scope.current_cook.reply.cookers.length
 
 
@@ -56,21 +58,21 @@ angular.module('cookers.controllers')
                 checkData.cooker_yummy_id = $scope.myProfile.yummy;
                 checkData.cook_id = $scope.cook_id;
 
-
-                /*checkmyyummyService.checkyummyHttpRequest(checkData).then(function(data){
+                checkmyyummyService.checkyummyHttpRequest(checkData).then(function(data){
+                    console.log(data);
                     $scope.yummyCheck = data;
                     if(!$scope.yummyCheck){
-                        /!**
+                        /**
                          * false --> 목록에 없음. 비활성화
-                         *!/
+                         */
                         $scope.yummyclickedStyle = {'color':'inherit'};
                     } else {
-                        /!**
+                        /**
                          * false --> 목록에 있음. 활성화
-                         *!/
+                         */
                         $scope.yummyclickedStyle = {'color':'deepskyblue'};
                     }
-                });*/
+                });
 
                 $scope.check_zimmy_data = {};
                 $scope.check_zimmy_data.cook_id = $scope.cook_id;
@@ -123,6 +125,14 @@ angular.module('cookers.controllers')
                     });
                     $scope.yummy_count = data.cookers.length;
                 });
+
+                var notice = {};
+                notice.kind_code = "L";
+                notice.from = $scope.myProfile._id;
+                notice.to = $scope.current_cook.w_cooker._id;
+                notice.cook = $scope.current_cook._id;
+
+                insertnoticeService.noticeHttpRequest(notice);
             }
 
             $scope.manageZimmy = function(){
@@ -164,13 +174,13 @@ angular.module('cookers.controllers')
                     scope: $scope
 
                 }).then(function(modal) {
-                    $scope.modal = modal;
+                    $scope.replymodal = modal;
                 });
 
                 $timeout(function () {
                     $ionicLoading.hide();
 
-                    $scope.modal.show();
+                    $scope.replymodal.show();
                 }, 1000);
             }
 
@@ -182,11 +192,39 @@ angular.module('cookers.controllers')
                  * 해당 키워드의 태그가 포함된 레시피 목록을 보여줌.
                  */
 
-
-                $scope.modal.hide();
-
+                $scope.showcookingmodal.hide();
 
                 tagkeywordService.set_tagKeyword(tag_name);
                 $state.go('tabs.searchresult_Tag',{tag:tag_name});
+            }
+
+
+            $scope.show_summary = function(){
+
+                $ionicLoading.show({
+                    showBackdrop: false,
+                    showDelay: 0,
+                    template : '<ion-spinner icon="lines" class="spinner-energized"></ion-spinner>'
+                });
+
+                $ionicModal.fromTemplateUrl('views/home/showsummaryTemplate.html', {
+                    scope: $scope
+
+                }).then(function(modal) {
+                    $scope.showsummarymodal = modal;
+                });
+
+                $timeout(function () {
+                    $ionicLoading.hide();
+
+                    $scope.showsummarymodal.show();
+                }, 1000);
+            }
+
+            $scope.share_social = function(){
+                /**
+                 * 추후 앱이 올라가면 다운로드 링크로 연결
+                 */
+                $cordovaSocialSharing.share('당신을 쿠커스로 초대합니다!!', '초대장', null, 'http://makeyourif.wordpress.com');
             }
         }]);
