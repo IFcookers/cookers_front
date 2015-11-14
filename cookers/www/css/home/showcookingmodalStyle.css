@@ -142,3 +142,14 @@
 .mh-slide.ng-leave, .mh-slide > .ng-leave {
     -webkit-transition: all ease-in-out 250ms;
     transition: all ease-in-out 250ms; }
+
+.background_modal{
+
+
+    background: url(../../img/foodbg.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
+}
