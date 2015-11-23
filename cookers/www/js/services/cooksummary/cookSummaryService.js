@@ -16,7 +16,7 @@ angular.module('cookers.services')
             var httpCook = {};
             var originCook = {};
             var httpEditCook = {};
-            var initImage = 'img/food3.jpg';
+            var initImage = 'img/no_image.jpg';
             var init = function(){
                 cook = {
                     _id : "",
@@ -60,6 +60,14 @@ angular.module('cookers.services')
                 return false;
             }
 
+            var stepImageValidationCheck = function(property, title){
+                if(property.trim() == initImage){
+                    alert(title + "을 선택해주세요.");
+                    return true;
+                }
+                return false;
+            }
+
             var stepValidationCheck = function(property, title){
                 if(property ==undefined || property.length == 2){
                     alert('최소 1개 이상의'+ title + "이 필요합니다.");
@@ -67,8 +75,9 @@ angular.module('cookers.services')
                 }else{
                     for(var i in property){
                         if(i==0 || i ==property.length-1) continue;
+                        if(stepImageValidationCheck(property[i].photo, 'Step.'+ i +'의 사진')) return true;
                         if(stringValidationCheck(property[i].content, 'Step.'+ i +'의 내용')) return true;
-                        if(stringValidationCheck(property[i].photo, 'Step.'+ i +'의 사진')) return true;
+
                     }
                 }
                 return false;
@@ -117,7 +126,7 @@ angular.module('cookers.services')
                 addTag : function(tag_name){
                     cook.summary[0].tags.push({
                         tag_name : tag_name
-                    })
+                    });
                 },
 
                 removeTag : function(index){
@@ -137,6 +146,7 @@ angular.module('cookers.services')
 
                 removeSummary : function(index){
                     cook.summary.splice(index, 1);
+                    return cook.summary.length;
                 },
 
                 getSummary : function(index){

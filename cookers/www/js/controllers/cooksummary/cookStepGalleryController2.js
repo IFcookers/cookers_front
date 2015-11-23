@@ -45,7 +45,9 @@ angular.module('cookers.controllers')
                     $scope.plus_button_condition = false;
                 }
                 console.log("delete : " + index+"//"+ $scope.plus_button_condition);
-                cookSummaryService.removeSummary(index);
+                if(cookSummaryService.removeSummary(index)==2){
+                    $scope.modifyCondition = false;
+                };
 
             }
 

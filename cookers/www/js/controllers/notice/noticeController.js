@@ -27,30 +27,37 @@ angular.module('cookers.controllers')
             $scope.checkBtnClick = function(selected_notice, index) {
                 console.log(selected_notice);
                 var code = selected_notice.kind_code;
+                if (code == "FM") {
+                    console.log("goto user");
+                    $state.go("tabs.user", {userid: selected_notice.from._id});
 
-                noticeService.updateStateCodeHttpRequest(selected_notice._id).then(function (result) {
-
-                    if (result.state == 200) {
-                        if (code == "FM") {
-                            console.log("goto user");
-                            $state.go("tabs.user", {userid: selected_notice.from._id});
-
-                        } else {
-                            console.log("cook modal open");
-                            $scope.openshowrecipeModal(selected_notice.cook._id, index);
-                        }
-                    } else {
-                        $ionicLoading.show({
-                            showBackdrop: true,
-                            showDelay: 0,
-                            template : '문제가 발생하여 홈화면으로 돌아갑니다.'
-                        });
-                        $timeout(function () {
-                            $ionicLoading.hide();
-                        }, 2000);
-                        $state.go("tabs.home");
-                    }
-                });
+                } else {
+                    console.log("cook modal open");
+                    $scope.openshowrecipeModal(selected_notice.cook._id, index);
+                }
+                //noticeService.updateStateCodeHttpRequest(selected_notice._id).then(function (result) {
+                //
+                //    if (result.state == 200) {
+                //        if (code == "FM") {
+                //            console.log("goto user");
+                //            $state.go("tabs.user", {userid: selected_notice.from._id});
+                //
+                //        } else {
+                //            console.log("cook modal open");
+                //            $scope.openshowrecipeModal(selected_notice.cook._id, index);
+                //        }
+                //    } else {
+                //        $ionicLoading.show({
+                //            showBackdrop: true,
+                //            showDelay: 0,
+                //            template : '문제가 발생하여 홈화면으로 돌아갑니다.'
+                //        });
+                //        $timeout(function () {
+                //            $ionicLoading.hide();
+                //        }, 2000);
+                //        $state.go("tabs.home");
+                //    }
+                //});
             }
 
             /**
