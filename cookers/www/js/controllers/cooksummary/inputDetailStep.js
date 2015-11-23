@@ -66,13 +66,13 @@ angular.module('cookers.controllers')
             $scope.modalPreBtnClick = function(){
                 console.log("modal pre");
                 $scope.modal.hide();
-            }
+            };
 
             $scope.modalCompleteBtnClick = function(){
                 console.log("modal complete");
                 $scope.drawCanvas();
                 $scope.modal.hide();
-            }
+            };
 
             $scope.openModal = function(){
                 $scope.selectedPhotoData = $scope.step.photo;
@@ -86,9 +86,6 @@ angular.module('cookers.controllers')
                     $scope.modal.show();
                 });
             };
-
-
-
 
             /**
              *  Draw Canvas Image
