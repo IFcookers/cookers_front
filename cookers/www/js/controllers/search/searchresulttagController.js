@@ -14,7 +14,13 @@ angular.module('cookers.controllers')
         function($scope, $ionicModal, $ionicLoading, $timeout, $ionicSlideBoxDelegate,  searchresultlist, tagkeywordService, currentinfoService) {
             $scope.tag_keyword = tagkeywordService.get_tagKeyword();
             $scope.cook_list = searchresultlist;
+            $scope.result_check = false;
 
+            console.log($scope.cook_list);
+
+            if($scope.cook_list.length == 0){
+                $scope.result_check = true;
+            }
 
             $scope.openshowrecipeModal = function(cook_id){
                 /**

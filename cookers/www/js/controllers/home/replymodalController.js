@@ -28,15 +28,16 @@ angular.module('cookers.controllers')
             $scope.myProfile = userinfoService.getuserInfo().cooker_profile;
             $scope.cook_model = cookmodelManage.get_cookmodel();
 
-            console.log($scope.myProfile);
-            console.log($scope.cook_model);
-
             var search_text = "",
                 my_regex = undefined,
                 my_regex_array = undefined;
 
             var temp_val = undefined,
                 temp_array = [];
+
+            var beforeapply_comment = undefined,
+                beforeapply_array = undefined,
+                beforeapplyPtn = undefined;
 
             $scope.userlist_show = false;
             $scope.taglist_show = false;
@@ -65,7 +66,7 @@ angular.module('cookers.controllers')
                 } else {
                     $scope.comments_check = false;
                 }
-            })
+            });
 
             $scope.apply_comment = function(){
 
@@ -94,6 +95,46 @@ angular.module('cookers.controllers')
 
                     $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
                 });
+
+                /**
+                 * 위 쪽에서 댓 글 등록 http 요청 후
+                 * 해당 댓 글에 사용자가 태그 되었나 찾음
+                 * 찾은 결과가 null이 아니면 notice요청
+                 */
+
+                beforeapply_comment = $scope.write_comment;
+                beforeapply_array = undefined;
+                beforeapplyPtn = /(@[a-z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|0-9]*)/gi;
+
+                beforeapply_array = beforeapply_comment.match(beforeapplyPtn);
+
+                if(beforeapply_array != null){
+
+                    for(var i in beforeapply_array){
+                        var pop_val = beforeapply_array[i];
+                        var split_array = pop_val.split('@');
+
+                        var search_param = {};
+                        search_param.type = "cookers";
+                        search_param.search_text = split_array[1];
+
+                        searchService.searchautocompleteHttpRequest(search_param).then(function(data){
+                            /**
+                             * 사용자가 태그됨을 알리는 notice 요청
+                             */
+
+                            console.log(data);
+
+                            var notice = {};
+                            notice.kind_code = "T";
+                            notice.from = $scope.myProfile._id;
+                            notice.to = data[0]._id;
+                            notice.cook = $scope.cook_model._id;
+
+                            insertnoticeService.noticeHttpRequest(notice);
+                        })
+                    }
+                }
             }
 
             $scope.closeModal = function() {
@@ -242,6 +283,7 @@ angular.module('cookers.controllers')
                                 $scope.userlist_show = true;
                                 $scope.taglist_show = false;
                                 $scope.tagPopover.show($event);
+
                             })
                         } else {
                             $scope.userlist_show = false;
@@ -338,7 +380,7 @@ angular.module('cookers.controllers')
 
                 replacePattern1 = /(@[a-z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|0-9]*)/gi;
                 $scope.replacedText = comment.replace(replacePattern1,
-                    '<button id="tag_button" class="button button-small button-clear button-positive tag_button" ng-click="tagclicked_inReply(\'cooker\',\'$1\')">$1</button>');
+                    '<a id="tag_button" style="font-size:15px; padding:0px;" class="button button-small button-clear button-positive tag_button" ng-click="tagclicked_inReply(\'cooker\',\'$1\')">$1</a>');
 
 
                 //$1은 뭐징??
@@ -353,7 +395,7 @@ angular.module('cookers.controllers')
                  */
                 replacePattern2 = /(#[a-z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣|0-9]*)/gi;
                 $scope.replacedText = $scope.replacedText.replace(replacePattern2,
-                    '<button id="tag_button" class="button button-small button-clear button-positive tag_button" ng-click="tagclicked_inReply(\'tag\',\'$1\')">$1</button>');
+                    '<a id="tag_button" style="font-size:15px; padding:0px;" class="button button-small button-clear button-positive tag_button" ng-click="tagclicked_inReply(\'tag\',\'$1\')">$1</a>');
 
 
                 return $scope.replacedText;

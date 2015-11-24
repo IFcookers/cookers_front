@@ -14,3 +14,7 @@ ion-popover-view.fit ion-content {
     padding-top: 10px;
     padding-bottom: 10px;
 }
+
+.popover-backdrop.active{
+    background:none !important;
+}

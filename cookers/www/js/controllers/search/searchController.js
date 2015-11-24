@@ -29,6 +29,7 @@ angular.module('cookers.controllers')
             $scope.tag_show = false;
             $scope.cook_show = false;
             $scope.cookers_show = false;
+            $scope.recommend_show = true;
             $scope.active = '';
             $scope.cook_count = 10;
 
@@ -135,14 +136,16 @@ angular.module('cookers.controllers')
             $scope.setActive = function(getType) {
                 /**
                  * sub-header의 버튼 활성화 메서드
-                 * @type {boolean}
                  */
+
+                $scope.recommend_show = false;
                 $scope.search_input = true;
                 $scope.search_text = "";
 
                 $scope.tag_show = false;
                 $scope.cook_show = false;
                 $scope.cookers_show = false;
+
 
                 if(getType == "tag"){
                     $scope.search_type = "태그 검색"

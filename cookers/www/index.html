@@ -5,7 +5,8 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title></title>
 
-    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/ionic.app.css" rel="stylesheet">
+    <!--<link href="lib/ionic/css/ionic.css" rel="stylesheet">-->
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 
     <!--custom style sheet-->
@@ -17,6 +18,7 @@
 
     <link href="css/cooksummary/test_cooksummaryStyle.css" rel="stylesheet">
     <link href="css/notice/noticeStyle.css" rel="stylesheet">
+    <link href="css/user/userStyle.css" rel="stylesheet">
 
     <!--external CSS-->
     <link href="lib/external/ngImgCrop/ng-img-crop.css" rel="stylesheet">
@@ -38,10 +40,10 @@
 </head>
 <body ng-controller="indexController">
 
-<ion-nav-bar class="bar-assertive">
+<ion-nav-bar class="bar-assertive main_nav_bar">
 </ion-nav-bar>
 
-<ion-nav-view ></ion-nav-view>
+<ion-nav-view></ion-nav-view>
 
 <!--ion nav view는 페이지에 진입할때마다 해당 템플릿을 캐싱해 둠-->
 <script id="templates/tabs.html" type="text/ng-template">

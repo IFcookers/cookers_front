@@ -26,6 +26,8 @@ angular.module('cookers.controllers')
             $scope.cooker_zimmy = cookerinfoService.getcookerZimmy();
             $scope.cooker_mycook = cookerinfoService.getcookerMycook();
 
+            $scope.active = 'mine';
+
             /**
              * userStatus => false -> 다른 유저 보기
              * userStatus => true -> 같은 유저 보기
@@ -60,7 +62,7 @@ angular.module('cookers.controllers')
                 }
             }
 
-            $scope.mycook_zimmy = 'mycook';
+            /*$scope.mycook_zimmy = 'mycook';
 
             $scope.mycookEvent = function(){
 
@@ -69,7 +71,7 @@ angular.module('cookers.controllers')
             };
             $scope.zimmyEvent = function(){
                 $scope.mycook_zimmy = 'zimmy';
-            };
+            };*/
 
 
 
@@ -194,6 +196,14 @@ angular.module('cookers.controllers')
                 cookSummaryService.setCook(edit_cook);
                 cookSummaryService.setOriginCook();
                 $state.go('tabs.cooksummary');
+            };
+
+            $scope.setActive = function(getType) {
+                $scope.active = getType;
+            };
+
+            $scope.isActive = function(type) {
+                return type === $scope.active;
             };
         }
     ]);

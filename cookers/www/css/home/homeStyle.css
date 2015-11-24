@@ -10,3 +10,10 @@
 .cookdetail_btn > h2, .cookdetail_btn > h3 {
     padding-bottom: 5px;
 }
+
+.bar.bar-assertive{
+    /*background-color: #f95f5f;
+    border-color:#f95f5f;*/
+    /*background-color:#e67e22;
+    border-color:#e67e22;*/
+}
