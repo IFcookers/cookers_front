@@ -17,15 +17,15 @@
                         <div style="margin-left:10px;">
                             <div class="row" style="padding:3px;!important;">
                                 <div class="col" style="text-align:center;" ng-click="followEvent();">
-                                    <h5>{{cooker_profile.following.length}}</h5>
+                                    <h5>{{!checkuserinfo_intag ? cooker_profile.following.length : '-'}}</h5>
                                     <h5>팔로잉</h5>
                                 </div>
                                 <div class="col" style="text-align:center;" ng-click="followerEvent();">
-                                    <h5>{{cooker_profile.followers.length}}</h5>
+                                    <h5>{{!checkuserinfo_intag ? cooker_profile.followers.length : '-'}}</h5>
                                     <h5>팔로워</h5>
                                 </div>
                                 <div class="col" style="text-align:center;">
-                                    <h5>{{cooker_profile.my_cook.length}}</h5>
+                                    <h5>{{!checkuserinfo_intag ? cooker_profile.my_cook.length : '-'}}</h5>
                                     <h5>게시글수</h5>
                                 </div>
                             </div>
@@ -51,7 +51,7 @@
                 </div>
             </div>-->
 
-            <div class="card">
+            <div class="card" ng-show="!checkuserinfo_intag">
                 <div class="button-bar">
                     <a class="button button-clear button-assertive"
                        ng-class="{'usercook_active': isActive('mine')}" ng-click="setActive('mine');">
@@ -84,11 +84,11 @@
                                 <i style="color:black;font-size: 20px;" class="icon ion-wand placeholder-icon" ng-click="edit(mycook)"></i>
                             </div>
                         </div>
-                        <div class="row" style="margin:0px; padding:0px; text-align: center; color:#9B9EA3">
-                            <div class="col" style="padding-bottom:0px;"><i class="ionicons ion-android-restaurant"></i>&nbsp;&nbsp;&nbsp;{{cook.yummy.cooks.length}}</div>
-                            <div class="col" style="padding-bottom:0px;"><i class="ionicons ion-chatbox-working"></i>&nbsp;&nbsp;&nbsp;{{cook.reply.cookers.length}}</div>
-                            <div class="col" style="padding-bottom:0px;"><i class="ionicons ion-ios-glasses"></i>&nbsp;&nbsp;&nbsp;{{cook.hits}}</div>
-                        </div>
+                        <!--<div class="row" style="margin:0px; padding:0px; text-align: center; color:#9B9EA3">
+                            <div class="col" style="padding-bottom:0px;"><i class="ionicons ion-android-restaurant"></i>&nbsp;&nbsp;&nbsp;{{mycook.yummy.cooks.length}}</div>
+                            <div class="col" style="padding-bottom:0px;"><i class="ionicons ion-chatbox-working"></i>&nbsp;&nbsp;&nbsp;{{mycook.reply.cookers.length}}</div>
+                            <div class="col" style="padding-bottom:0px;"><i class="ionicons ion-ios-glasses"></i>&nbsp;&nbsp;&nbsp;{{mycook.hits}}</div>
+                        </div>-->
                     </a>
                     <!--<ion-infinite-scroll
                         on-infinite="loadmoreCookEvent()"
@@ -106,17 +106,17 @@
                     </div>
 
                     <a class="item item-thumbnail-left cookdetail_btn" ng-repeat="zimmy in cooker_zimmy | limitTo : cooker_zimmy_count"
-                       ng-click="openshowrecipeModal(mycook._id)">
+                       ng-click="openshowrecipeModal(zimmy._id)">
                         <!--<img ng-src={{cook.comple_photo.path}}>-->
                         <img src="img/recipe_testimg.jpg">
                         <h2>{{zimmy.title}}</h2>
                         <h4>작성자 : {{zimmy.w_cooker.nick_name}}</h4>
                         <div style="white-space:pre-line; color:#9B9EA3; font-size:12px;">{{zimmy.desc}}</div>
-                        <div class="row" style="margin:0px; padding:0px; text-align: center; color:#9B9EA3">
+                        <!--<div class="row" style="margin:0px; padding:0px; text-align: center; color:#9B9EA3">
                             <div class="col" style="padding-bottom:0px;"><i class="ionicons ion-android-restaurant"></i>&nbsp;&nbsp;&nbsp;{{cook.yummy.cooks.length}}</div>
                             <div class="col" style="padding-bottom:0px;"><i class="ionicons ion-chatbox-working"></i>&nbsp;&nbsp;&nbsp;{{cook.reply.cookers.length}}</div>
                             <div class="col" style="padding-bottom:0px;"><i class="ionicons ion-ios-glasses"></i>&nbsp;&nbsp;&nbsp;{{cook.hits}}</div>
-                        </div>
+                        </div>-->
                     </a>
                     <!--<ion-infinite-scroll
                         on-infinite="loadmoreCookEvent()"

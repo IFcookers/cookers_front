@@ -225,20 +225,28 @@ angular.module('cookers', [
                 resolve: {
                     userStatus: ['$stateParams', '$localStorage', 'cookerinfoService', 'cookerService','$rootScope',
                         function ($stateParams, $localStorage, cookerinfoService, cookerService, $rootScope) {
+                            var temp = {};
+                            if($stateParams.userid != ""){
+                                return cookerService.getcookerProfileHttpRequest($stateParams.userid).then(function (res_data) {
+                                    cookerinfoService.setcookerInfo(res_data.cooker_profile);
+                                    cookerinfoService.setcookerZimmy(res_data.cooker_zimmy);
+                                    cookerinfoService.setcookerMycook(res_data.cooker_mycook);
 
-                            return cookerService.getcookerProfileHttpRequest($stateParams.userid).then(function (res_data) {
-                                console.log($stateParams.userid);
-                                cookerinfoService.setcookerInfo(res_data.cooker_profile);
-                                cookerinfoService.setcookerZimmy(res_data.cooker_zimmy);
-                                cookerinfoService.setcookerMycook(res_data.cooker_mycook);
+                                    temp.check_userinfo = false;
+                                    if ($stateParams.userid == $localStorage.id) {
+                                        temp.check_myuserinfo = true;
+                                        /*return true;*/
+                                    } else {
+                                        temp.check_myuserinfo = false;
+                                        /*return false;*/
+                                    }
+                                    return temp;
 
-                                if ($stateParams.userid == $localStorage.id) {
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            });
-
+                                });
+                            } else{
+                                temp.check_userinfo = true;
+                                return temp;
+                            }
                         }]
                 }
             })
