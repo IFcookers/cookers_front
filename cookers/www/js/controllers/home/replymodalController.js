@@ -281,10 +281,12 @@ angular.module('cookers.controllers')
                             search_param.search_text = temp_array[1];
 
                             searchService.searchautocompleteHttpRequest(search_param).then(function(data){
+                                $scope.taglist_show = false;
 
                                 if(data.length != 0){
                                     $scope.cooker_list = data;
                                     $scope.userlist_show = true;
+
                                     $scope.tagPopover.show($event);
                                 } else {
                                     $scope.userlist_show = false;
@@ -307,7 +309,7 @@ angular.module('cookers.controllers')
                             search_param.search_text = temp_array[1];
 
                             searchService.searchautocompleteHttpRequest(search_param).then(function(data){
-
+                                $scope.userlist_show = false;
                                 if(data.length != 0){
                                     $scope.tag_list = data;
                                     $scope.taglist_show = true;

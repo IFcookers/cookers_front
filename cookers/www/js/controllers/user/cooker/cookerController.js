@@ -23,11 +23,15 @@ angular.module('cookers.controllers')
         function($scope, $localStorage, userStatus, cookerinfoService,cookerService,$state,$rootScope,$window,$ionicHistory,currentinfoService,$ionicModal,$ionicLoading,$timeout,$ionicSlideBoxDelegate, cookSummaryService){
 
             $scope.checkuserinfo_intag = userStatus.check_userinfo;
+            $scope.check_myuserinfo_intag = userStatus.check_myuserinfo;
 
             if(!userStatus.check_userinfo){
                 $scope.cooker_profile = cookerinfoService.getcookerInfo();
                 $scope.cooker_zimmy = cookerinfoService.getcookerZimmy();
                 $scope.cooker_mycook = cookerinfoService.getcookerMycook();
+
+                console.log($scope.cooker_mycook);
+                console.log($scope.cooker_zimmy);
 
                 $scope.active = 'mine';
 

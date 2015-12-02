@@ -14,15 +14,13 @@ angular.module('cookers.controllers')
         function($scope, $ionicModal, $ionicSlideBoxDelegate, $ionicLoading, $timeout, cooksService,
                  userinfoService, currentinfoService) {
 
-            $scope.cook_count = 10;
+            $scope.cook_count = 5;
             $scope.moreDataCanBeLoaded = true;
             $scope.cook_list = [];
 
             $scope.$on('getprofileComplete',function(event, args){
-
-                cooksService.getcooksList(userinfoService.getuserInfo().cooker_profile.following).then(function(data){
+                cooksService.getcooksList(userinfoService.getuserInfo().cooker_profile.following, userinfoService.getuserInfo().cooker_profile._id).then(function(data){
                     $scope.cook_list = data;
-                    console.log(data);
                 });
             });
 
@@ -70,8 +68,7 @@ angular.module('cookers.controllers')
              * 당겨서 새로고침 함수
              */
             $scope.refreshcookList = function(){
-                cooksService.getcooksList(userinfoService.getuserInfo().cooker_profile.following).then(function (data) {
-                    console.log(data);
+                cooksService.getcooksList(userinfoService.getuserInfo().cooker_profile.following, userinfoService.getuserInfo().cooker_profile._id).then(function (data) {
                     $scope.cook_list = data;
                     $scope.$broadcast('scroll.refreshComplete');
 
@@ -87,7 +84,7 @@ angular.module('cookers.controllers')
                     $scope.moreDataCanBeLoaded = false;
                 }
 
-                $scope.cook_count = $scope.cook_count*1 + 10;
+                $scope.cook_count = $scope.cook_count*1 + 5;
                 $scope.$broadcast('scroll.infiniteScrollComplete');
             };
 

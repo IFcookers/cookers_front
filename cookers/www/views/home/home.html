@@ -10,9 +10,10 @@
         <!--ion-refresher end-->
 
         <!--repeart part start-->
-        <div class="list card" ng-repeat="cook in cook_list  | limitTo : cook_count">
+        <div class="list card" ng-repeat="cook in cook_list  | limitTo : cook_count | orderBy:'date':true"
+                collection-item-width="100%">
             <a class="item item-avatar avatar_div" href="#/tab/user/{{cook.w_cooker._id}}">
-                <!--<img class="avatar_img" ng-src={{cook.w_cooker_info.cooker_photo.path}}>-->
+                <!--<img src="img/unanimous.png" ng-src={{cook.w_cooker.cooker_photo}}>-->
                 <img src="img/nick.jpg">
                 <div class="row" style="padding-top:0px;">
                     <div class="col" style="font-weight: bold; padding-top:0px; font-size:15px;">
@@ -24,19 +25,19 @@
                 </div>
             </a>
 
-            <a class="item item-thumbnail-left cookdetail_btn" href="#" ng-click="openshowrecipeModal(cook._id)">
-                <!--<img ng-src={{cook.comple_photo.path}}>-->
-                <img src="img/recipe_testimg.jpg">
+            <div class="item item-thumbnail-left cookdetail_btn" ng-click="openshowrecipeModal(cook._id)">
+                <img ng-src={{cook.complete_photo}}>
+                <!--<img src="img/recipe_testimg.jpg">-->
                 <h2>{{cook.title}}</h2>
 
                 <div style="white-space:pre-line; color:#9B9EA3; font-size:12px;">{{cook.desc}}</div>
 
                 <div class="row" style="padding:0px; text-align: center; color:#9B9EA3">
-                    <div class="col" style="padding-bottom:0px;"><i class="ionicons ion-android-restaurant"></i>&nbsp;&nbsp;&nbsp;{{cook.yummy.cooks.length}}</div>
+                    <div class="col" style="padding-bottom:0px;"><i class="ionicons ion-ios-heart"></i>&nbsp;&nbsp;&nbsp;{{cook.yummy.cookers.length}}</div>
                     <div class="col" style="padding-bottom:0px;"><i class="ionicons ion-chatbox-working"></i>&nbsp;&nbsp;&nbsp;{{cook.reply.cookers.length}}</div>
-                    <div class="col" style="padding-bottom:0px;"><i class="ionicons ion-ios-glasses"></i>&nbsp;&nbsp;&nbsp;{{cook.hits}}</div>
+                    <div class="col" style="padding-bottom:0px;"><i class="ionicons ion-ios-glasses-outline"></i></i>&nbsp;&nbsp;&nbsp;{{cook.hits}}</div>
                 </div>
-            </a>
+            </div>
         </div>
         <!--repeart part end-->
 

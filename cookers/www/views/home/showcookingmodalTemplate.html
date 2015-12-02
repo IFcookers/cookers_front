@@ -48,8 +48,9 @@
                 <!--complete step button group-->
                 <ion-footer-bar class="bar-assertive" style="padding:0px; border:0px;">
                     <div class="item tabs tabs-assertive tabs-icon-left">
-                        <a class="tab-item" ng-click="yummyClicked()" ng-style="yummyclickedStyle">
-                            <i class="icon ion-android-restaurant"></i>
+                        <a class="tab-item" ng-click="yummyClicked()">
+                            <i class="icon ion-android-favorite" ng-show="yummy_check"></i>
+                            <i class="icon ion-android-favorite-outline" ng-hide="yummy_check"></i>
                             <span style="font-size:14px;">&nbsp;&nbsp;&nbsp;{{yummy_count}}</span>
                         </a>
                         <a class="tab-item" ng-click="addReply()">
@@ -112,8 +113,9 @@
             <!--steps button group-->
             <ion-footer-bar class="bar-assertive" style="padding:0px; border:0px;">
                 <div class="item tabs tabs-assertive tabs-icon-left">
-                    <a class="tab-item" ng-click="yummyClicked()" ng-style="yummyclickedStyle">
-                        <i class="icon ion-android-restaurant"></i>
+                    <a class="tab-item">
+                        <i class="icon ion-android-favorite" ng-show="yummy_check" ng-click="yummyClicked()"></i>
+                        <i class="icon ion-android-favorite-outline" ng-hide="yummy_check" ng-click="yummyClicked()"></i>
                         <span style="font-size:14px;">&nbsp;&nbsp;&nbsp;{{yummy_count}}</span>
                     </a>
                     <a class="tab-item" ng-click="addReply()">
