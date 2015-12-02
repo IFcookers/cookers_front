@@ -108,7 +108,6 @@ angular.module('cookers.controllers')
 
                 beforeapply_array = beforeapply_comment.match(beforeapplyPtn);
 
-                console.log(beforeapply_array);
                 if(beforeapply_array != null){
 
                     for(var i in beforeapply_array){
@@ -119,21 +118,20 @@ angular.module('cookers.controllers')
                         search_param.type = "cookers";
                         search_param.search_text = split_array[1];
 
-
                         searchService.searchautocompleteHttpRequest(search_param).then(function(data){
                             /**
                              * 사용자가 태그됨을 알리는 notice 요청
                              */
 
-                            if(data.length != 0){
-                                var notice = {};
-                                notice.kind_code = "T";
-                                notice.from = $scope.myProfile._id;
-                                notice.to = data[0]._id;
-                                notice.cook = $scope.cook_model._id;
-                                insertnoticeService.noticeHttpRequest(notice);
-                            }
+                            console.log(data);
 
+                            var notice = {};
+                            notice.kind_code = "T";
+                            notice.from = $scope.myProfile._id;
+                            notice.to = data[0]._id;
+                            notice.cook = $scope.cook_model._id;
+
+                            insertnoticeService.noticeHttpRequest(notice);
                         })
                     }
                 }
@@ -242,9 +240,8 @@ angular.module('cookers.controllers')
             });
 
 
-            var condition = undefined;
+            var condition = false;
             $scope.tagtext_change = function($event) {
-
                 /**
                  * ng-change로는 $event 객체를 받아올 수 없기 때문에
                  * ng-keyup 메서드를 사용함.
@@ -271,28 +268,27 @@ angular.module('cookers.controllers')
                 if(condition == "@"){
                     my_regex_array = search_text.match(my_regex);
                     if(my_regex_array != null){
+
                         temp_val = my_regex_array.pop();
                         temp_array = temp_val.split('@');
 
                         //추출한 문자열의 길이가 1 이상일때만 요청. 아니면 모든 유저목록을 가져옴.
-                        if(temp_array[1].length > 0){
+                        if(temp_array[1].length >= 1){
                             var search_param = {};
                             search_param.type = "cooker";
                             search_param.search_text = temp_array[1];
 
                             searchService.searchautocompleteHttpRequest(search_param).then(function(data){
+                                $scope.cooker_list = data;
+                                $scope.userlist_show = true;
                                 $scope.taglist_show = false;
+                                $scope.tagPopover.show($event);
 
-                                if(data.length != 0){
-                                    $scope.cooker_list = data;
-                                    $scope.userlist_show = true;
-
-                                    $scope.tagPopover.show($event);
-                                } else {
-                                    $scope.userlist_show = false;
-                                    $scope.tagPopover.hide();
-                                }
                             })
+                        } else {
+                            $scope.userlist_show = false;
+                            $scope.taglist_show = false;
+                            $scope.tagPopover.hide();
                         }
                     }
                 } else if(condition == "#"){
@@ -303,25 +299,27 @@ angular.module('cookers.controllers')
                         temp_array = temp_val.split('#');
 
                         //추출한 문자열의 길이가 1 이상일때만 요청. 아니면 모든 유저목록을 가져옴.
-                        if(temp_array[1].length > 0){
+                        if(temp_array[1].length >= 1){
                             var search_param = {};
                             search_param.type = "tag";
                             search_param.search_text = temp_array[1];
 
                             searchService.searchautocompleteHttpRequest(search_param).then(function(data){
+                                $scope.tag_list = data;
                                 $scope.userlist_show = false;
-                                if(data.length != 0){
-                                    $scope.tag_list = data;
-                                    $scope.taglist_show = true;
-                                    $scope.tagPopover.show($event);
-
-                                } else {
-                                    $scope.taglist_show = false;
-                                    $scope.tagPopover.hide();
-                                }
+                                $scope.taglist_show = true;
+                                $scope.tagPopover.show($event);
                             })
+                        } else {
+                            $scope.userlist_show = false;
+                            $scope.taglist_show = false;
+                            $scope.tagPopover.hide();
                         }
                     }
+                } else {
+                    $scope.userlist_show = false;
+                    $scope.taglist_show = false;
+                    $scope.tagPopover.hide();
                 }
             }
 

@@ -20,7 +20,8 @@ angular.module('cookers.controllers')
         '$timeout',
         'userinfoService',
         '$localStorage',
-        function ($scope, $rootScope, signService, $ionicLoading, $timeout, userinfoService, $localStorage) {
+        'socket',
+        function ($scope, $rootScope, signService, $ionicLoading, $timeout, userinfoService, $localStorage, socket) {
 
             /**
              *
@@ -77,7 +78,6 @@ angular.module('cookers.controllers')
 
                                 userinfoService.setuserInfo(sign_response_data);
 
-
                                 $localStorage.email = sign_response_data.cooker_profile.email;
                                 $localStorage.nick_name = sign_response_data.cooker_profile.nick_name;
                                 $localStorage.token = sign_response_data.sign_token;
@@ -87,9 +87,9 @@ angular.module('cookers.controllers')
 
                                 $rootScope.$broadcast("getprofileComplete");
 
+                                socket.emit('add user', $localStorage.id);
+
                                 $scope.$emit('closeModal');
-
-
                             }, 1000);
                         } else {
                             //로그인 실패

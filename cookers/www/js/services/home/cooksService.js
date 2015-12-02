@@ -14,15 +14,9 @@ angular.module('cookers.services')
 
             var address = cookers_config.url;
             var cooksList = {};
-            cooksList.getcooksList = function(following_list, my_id){
+            cooksList.getcooksList = function(following_list){
 
-                /**
-                 * 내 _id를 먼저 push
-                 * 그 다음 나의 팔로잉 리스트를 push
-                 */
                 var temp = [];
-
-                temp.push(my_id);
 
                 for(var i in following_list){
                     temp.push(following_list[i]._id);

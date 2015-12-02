@@ -62,7 +62,7 @@
             <ion-nav-view name="cooksummary-tab"></ion-nav-view>
         </ion-tab>
 
-        <ion-tab icon="ion-android-notifications-none" ng-click="goNotice()"  href="#/tab/notice">
+        <ion-tab icon="ion-android-notifications-none" badge="badgedata" badge-style="badge-dark" ng-click="goNotice()"  href="#/tab/notice">
             <ion-nav-view name="notice-tab"></ion-nav-view>
         </ion-tab>
 
@@ -95,6 +95,7 @@
 <script src="js/controllers/notice/noticeController.js"></script>
 <script src="js/controllers/user/cooker/followController.js"></script>
 <script src="js/controllers/user/cooker/followerController.js"></script>
+<script src="js/controllers/user/cooker/profileimgmodalController.js"></script>
 
 
 
@@ -120,6 +121,7 @@
 <script src="js/services/cooksummary/cameraService.js"></script>
 
 <script src="js/services/notice/noticeService.js"></script>
+<script src="js/services/notice/socketconnectService.js"></script>
 
 <!--directives-->
 <script src="js/directives/timeDirective.js"></script>
@@ -136,5 +138,8 @@
 <script src="lib/external/ngStorage/ngStorage.js"></script>
 <script src="lib/external/angularJwt/angular-jwt.js"></script>
 <script src="lib/external/angular-ios-uiwebview-patch/angular-ios9-uiwebview-patch.js"></script>
+
+<script src="lib/external/socket.io-client/socket.io.js"></script>
+<script src="lib/external/angular-socket-io/socket.js" ></script>
 </body>
 </html>

@@ -17,7 +17,7 @@ angular.module('cookers', [
     'ngImgCrop',
     'ngIOS9UIWebViewPatch',
     'time.directive',
-    'reply.directive',
+    'reply.directive'
 ])
     .run([
         '$ionicPlatform',
@@ -27,11 +27,12 @@ angular.module('cookers', [
         '$rootScope',
         '$cordovaPush',
         '$ionicLoading',
-        function ($ionicPlatform, $localStorage, userinfoService, cookerService, $rootScope, $cordovaPush, $ionicLoading) {
-
+        'socket',
+        function ($ionicPlatform, $localStorage, userinfoService, cookerService, $rootScope, $cordovaPush, $ionicLoading, socket) {
             $ionicPlatform.offHardwareBackButton(function(){
 
             });
+
             $ionicPlatform.ready(function () {
                 // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
                 // for form inputs)
@@ -56,6 +57,13 @@ angular.module('cookers', [
                     cooker_photo : ''
                 });
             } else {
+
+                /*socket.on('success', function(data){
+                    console.log(data);
+
+                });*/
+
+                socket.emit('add user', $localStorage.id);
                 $ionicLoading.show({
                     showBackdrop: false,
                     showDelay: 0,
@@ -225,28 +233,20 @@ angular.module('cookers', [
                 resolve: {
                     userStatus: ['$stateParams', '$localStorage', 'cookerinfoService', 'cookerService','$rootScope',
                         function ($stateParams, $localStorage, cookerinfoService, cookerService, $rootScope) {
-                            var temp = {};
-                            if($stateParams.userid != ""){
-                                return cookerService.getcookerProfileHttpRequest($stateParams.userid).then(function (res_data) {
-                                    cookerinfoService.setcookerInfo(res_data.cooker_profile);
-                                    cookerinfoService.setcookerZimmy(res_data.cooker_zimmy);
-                                    cookerinfoService.setcookerMycook(res_data.cooker_mycook);
 
-                                    temp.check_userinfo = false;
-                                    if ($stateParams.userid == $localStorage.id) {
-                                        temp.check_myuserinfo = true;
-                                        /*return true;*/
-                                    } else {
-                                        temp.check_myuserinfo = false;
-                                        /*return false;*/
-                                    }
-                                    return temp;
+                            return cookerService.getcookerProfileHttpRequest($stateParams.userid).then(function (res_data) {
+                                console.log($stateParams.userid);
+                                cookerinfoService.setcookerInfo(res_data.cooker_profile);
+                                cookerinfoService.setcookerZimmy(res_data.cooker_zimmy);
+                                cookerinfoService.setcookerMycook(res_data.cooker_mycook);
 
-                                });
-                            } else{
-                                temp.check_userinfo = true;
-                                return temp;
-                            }
+                                if ($stateParams.userid == $localStorage.id) {
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            });
+
                         }]
                 }
             })
@@ -313,7 +313,7 @@ angular.module('cookers', [
 
 angular.module('cookers.controllers', []);
 
-angular.module('cookers.services', []);
+angular.module('cookers.services', ['btford.socket-io']);
 
 angular.module('cookers.directives', []);
 

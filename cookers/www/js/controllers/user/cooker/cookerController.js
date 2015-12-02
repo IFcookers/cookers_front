@@ -60,11 +60,13 @@ angular.module('cookers.controllers')
                         /**
                          * 다른유저의 프로필을 보고 있는 상황에서 팔로우중
                          */
+                        $scope.follow_status_class = "button-balanced";
                         $scope.profile_btn = '팔로우끊기';
                     }else{
                         /**
                          * 다른유저의 프로필을 보고 있는 상황에서 팔로우중이지 않음
                          */
+                        $scope.follow_status_class = "button-assertive";
                         $scope.profile_btn = '팔로우하기';
                     }
                 }
@@ -107,7 +109,7 @@ angular.module('cookers.controllers')
                              * 다른유저의 프로필을 보고 있는 상황에서 팔로우중
                              */
                             cookerService.cancelFollowerHttpRequest($localStorage.id, $scope.cooker_profile._id).then(function(data){
-
+                                $scope.follow_status_class = "button-assertive";
                                 $state.go($state.current, {userid : $scope.cooker_profile._id}, {reload: true});
 
                             })
@@ -119,7 +121,7 @@ angular.module('cookers.controllers')
                              * $scope.cookr_profile._id -> 팔로우 당할 쿠커의 아이디
                              */
                             cookerService.makeFollowerHttpRequest($localStorage.id,$localStorage.nick_name,$localStorage.cooker_photo,$scope.cooker_profile._id, $scope.cooker_profile.nick_name, $scope.cooker_profile.cooker_photo).then(function(follow_status){
-
+                                $scope.follow_status_class = "button-balanced";
                                 $state.go($state.current, {userid : $scope.cooker_profile._id}, {reload: true});
 
                             })
@@ -138,6 +140,21 @@ angular.module('cookers.controllers')
                     var backView = $ionicHistory.backView();
                     backView.go();
                 };
+
+                $scope.profile_img_zoom = function(){
+
+                    $ionicModal.fromTemplateUrl('views/user/profileimg_modal.html', {
+                        scope: $scope,
+                        animation: 'mh-slide'
+                    }).then(function(modal) {
+                        $scope.profileimgmodal = modal;
+                        $scope.profileimgmodal.show();
+                    });
+
+                };
+                $scope.$on('profileimg_modal_close', function(){
+                    $scope.profileimgmodal.hide();
+                });
 
 
                 $scope.openshowrecipeModal = function(cook_id){

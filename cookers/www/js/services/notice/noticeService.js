@@ -4,7 +4,6 @@ angular.module('cookers.services')
         '$q',
         'cookers_config',
         function($http, $q, cookers_config){
-
             var notices = {};
 
             var address = cookers_config.url;

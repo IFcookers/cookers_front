@@ -13,7 +13,14 @@ angular.module('cookers.controllers')
         'cookerService',
         'userinfoService',
         '$rootScope',
-        function($scope, $ionicModal, $localStorage, $state, cookSummaryService, cookerService, userinfoService, $rootScope){
+        'socket',
+        function($scope, $ionicModal, $localStorage, $state, cookSummaryService, cookerService, userinfoService, $rootScope, socket){
+
+            $scope.badgedata = '';
+
+            socket.on('badgenoti', function(data){
+                $scope.badgedata = data;
+            });
 
             $scope.user_id = $localStorage.id;
 
@@ -72,7 +79,7 @@ angular.module('cookers.controllers')
             }
 
             $scope.goNotice = function(){
-                console.log("gogo")
+                $scope.badgedata = "";
                 $state.go('tabs.notice');
             }
 

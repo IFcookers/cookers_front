@@ -14,62 +14,89 @@
                 <input ng-change="search()" ng-model="search_text" type="text" placeholder="{{search_type}}">
             </label>
         </div>
-        <div ng-show="recommend_show" class="item item-body">
-            오늘의 추천 메뉴
-        </div>
     </ion-header-bar>
 
     <ion-content padding="false" style="top:132px;">
-        <ion-list ng-show="recommend_show">
-            <!--<div class="row" style="padding:0px;">
+        <!--<ion-list ng-show="recommend_show">
+            <div class="row" style="padding:0px;">
                 <div class="col-50">
-                    <div class="item item-body" style="padding:0px;">
-                        <img class="full-image" src="img/food1.jpg">
+                    <div class="list card" style="margin:10px;">
+                        <div class="item" style="background-color:#886aea;">
+                            <h3 style=" color:#ffffff;">꽃상추쌈</h3>
+                        </div>
+                        <div class="item item-body">
+                            <img class="full-image" src="img/꽃상추쌈.jpg">
+                        </div>
                     </div>
                 </div>
                 <div class="col-50">
-                    <div class="item item-body" style="padding:0px;">
-                        <img class="full-image" src="img/food2.jpg">
+                    <div class="list card" style="margin:10px;">
+                        <div class="item item-body">
+                            <img class="full-image" src="img/달래오이무침.jpg">
+                        </div>
+                        <div class="item" style="background-color:gold;">
+                            <h3 style=" color:#ffffff;">달래오이무침</h3>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row" style="padding:0px;">
+            <div class="row">
                 <div class="col-50">
-                    <div class="item item-body" style="padding:0px;">
-                        <img class="full-image" src="img/food3.jpg">
+                    <div class="list card" style="margin:10px;">
+                        <div class="item" style="background-color:#ff675d;">
+                            <h3 style=" color:#ffffff;">닭강정</h3>
+                        </div>
+                        <div class="item item-body">
+                            <img class="full-image" src="img/닭강정.jpg">
+                        </div>
                     </div>
                 </div>
                 <div class="col-50">
-                    <div class="item item-body" style="padding:0px;">
-                        <img class="full-image" src="img/food4.jpg">
+                    <div class="list card" style="margin:10px;">
+                        <div class="item item-body">
+                            <img class="full-image" src="img/닭고기콘그라탕.jpg">
+                        </div>
+                        <div class="item" style="background-color:aquamarine;">
+                            <h3 style=" color:#ffffff;">닭고기콘그라탕</h3>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row" style="padding:0px;">
+            <div class="row">
                 <div class="col-50">
-                    <div class="item item-body" style="padding:0px;">
-                        <img class="full-image" src="img/food5.jpg">
+                    <div class="list card" style="margin:10px;">
+                        <div class="item" style="background-color:moccasin;">
+                            <h3 style=" color:#ffffff;">딸기스무디</h3>
+                        </div>
+                        <div class="item item-body">
+                            <img class="full-image" src="img/딸기스무디.jpg">
+                        </div>
                     </div>
                 </div>
                 <div class="col-50">
-                    <div class="item item-body" style="padding:0px;">
-                        <img class="full-image" src="img/food6.jpg">
+                    <div class="list card" style="margin:10px;">
+                        <div class="item item-body">
+                            <img class="full-image" src="img/라자니아.jpg">
+                        </div>
+                        <div class="item" style="background-color:steelblue;">
+                            <h3 style=" color:#ffffff;">라자니아</h3>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row" style="padding:0px;">
+            <div class="row">
                 <div class="col-50">
-                    <div class="item item-body" style="padding:0px;">
-                        <img class="full-image" src="img/food7.jpg">
+                    <div class="list card" style="margin:10px;">
+                        <div class="item"` style="background-color:olive;">
+                            <h3 style=" color:#ffffff;">아이스후르츠소다</h3>
+                        </div>
+                        <div class="item item-body">
+                            <img class="full-image" src="img/아이스후르츠소다.jpg">
+                        </div>
                     </div>
                 </div>
-                <div class="col-50">
-                    <div class="item item-body" style="padding:0px;">
-                        <img class="full-image" src="img/food8.jpg">
-                    </div>
-                </div>
-            </div>-->
-        </ion-list>
+            </div>
+        </ion-list>-->
 
         <!--tag ion list-->
         <ion-list ng-show="tag_show">
@@ -83,7 +110,8 @@
         <ion-list ng-show="cook_show">
             <div class="list card" ng-repeat="cook in cook_list  | limitTo : cook_count ">
                 <a class="item item-avatar" href="#/tab/user/{{cook.w_cooker._id}}">
-                    <img src="img/unanimous.png" ng-src={{cook.w_cooker.cooker_photo}}>
+                    <!--<img class="avatar_img" ng-src={{cook.w_cooker_info.cooker_photo.path}}>-->
+                    <img src="img/nick.jpg">
                     <div class="row" style="padding-top:0px;">
                         <div class="col" style="font-weight: bold; padding-top:0px; font-size:15px;">
                             {{cook.w_cooker.nick_name}}
@@ -95,7 +123,8 @@
                 </a>
 
                 <a class="item item-thumbnail-left cookdetail_btn" ng-click="openshowrecipeModal(cook._id)">
-                    <img ng-src={{cook.complete_photo}}>
+                    <!--<img ng-src={{cook.comple_photo.path}}>-->
+                    <img src="img/recipe_testimg.jpg">
                     <h2>{{cook.title}}</h2>
 
                     <div style="white-space:pre-line; color:#9B9EA3; font-size:12px;">{{cook.desc}}</div>
@@ -113,7 +142,7 @@
         <!--cookers ion list-->
         <ion-list ng-show="cookers_show">
             <a class="item item-avatar" ng-repeat="cooker in cookers_list" href="#/tab/user/{{cooker._id}}">
-                <img src="img/unanimous.png" ng-src={{cooker.cooker_photo}}>
+                <img src="img/nick.jpg">
                 <h2 style="font-size:15px; font-weight: bold; color:slategrey">{{cooker.nick_name}}</h2>
                 <h4 style="font-size:12px; padding-top:5px;">{{cooker.state_comment}}</h4>
             </a>

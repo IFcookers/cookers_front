@@ -19,15 +19,14 @@ angular.module('cookers.controllers')
         'checkmyzimmyService',
         'tagkeywordService',
         'insertnoticeService',
-        'inchitService',
         function($scope, $ionicModal, $ionicLoading, $timeout, $state, $cordovaSocialSharing, cookstepService, currentinfoService,
                  userinfoService, yummyService, zimmyService, cookmodelManage, checkmyyummyService,
-                 checkmyzimmyService, tagkeywordService, insertnoticeService, inchitService) {
+                 checkmyzimmyService, tagkeywordService, insertnoticeService) {
 
             $scope.current_cook={};
             $scope.cook_id = currentinfoService.get_currentcook_id();
             $scope.myProfile = userinfoService.getuserInfo().cooker_profile;
-            $scope.yummy_count=0;
+            $scope.yummyCheck = false;
             $scope.is_zimmy = false;
 
 
@@ -41,6 +40,7 @@ angular.module('cookers.controllers')
                  * setcook function()
                  * cookstepmodal로 들어와 서버를 통해 cook정보를 받으면 이를 set시킴.
                  */
+                console.log(data[0]);
                 cookmodelManage.set_cookmodel(data[0]);
 
                 /**
@@ -53,22 +53,25 @@ angular.module('cookers.controllers')
                 $scope.yummy_count = $scope.current_cook.yummy.cookers.length;
                 $scope.reply_count = $scope.current_cook.reply.cookers.length
 
-                /**
-                 * 위에서 cookStep에 대한 데이터 바인딩 후
-                 * 해당 cook 조회수 증가
-                 */
-                inchitService.increase_hit($scope.cook_id);
 
-                $scope.check_yummy_data = {};
-                $scope.check_yummy_data.cooker_yummy_id = $scope.myProfile.yummy;
-                $scope.check_yummy_data.cook_id = $scope.cook_id;
+                var checkData = {};
+                checkData.cooker_yummy_id = $scope.myProfile.yummy;
+                checkData.cook_id = $scope.cook_id;
 
-                /**
-                 * 쿡을 터치했을때 처음 yummy를 체크하는 부분
-                 * 유저정보에 있는 유저 _id와 yummy의 _id가 필요
-                 */
-                checkmyyummyService.checkyummyHttpRequest($scope.check_yummy_data).then(function(data){
-                    $scope.yummy_check = data;
+                checkmyyummyService.checkyummyHttpRequest(checkData).then(function(data){
+                    console.log(data);
+                    $scope.yummyCheck = data;
+                    if(!$scope.yummyCheck){
+                        /**
+                         * false --> 목록에 없음. 비활성화
+                         */
+                        $scope.yummyclickedStyle = {'color':'inherit'};
+                    } else {
+                        /**
+                         * false --> 목록에 있음. 활성화
+                         */
+                        $scope.yummyclickedStyle = {'color':'deepskyblue'};
+                    }
                 });
 
                 $scope.check_zimmy_data = {};
@@ -76,10 +79,19 @@ angular.module('cookers.controllers')
                 $scope.check_zimmy_data.cooker_id = $scope.myProfile._id;
 
                 checkmyzimmyService.checkzimmyHttpRequest($scope.check_zimmy_data).then(function(data){
-                    $scope.is_zimmy = data;
+                    if(data){
+                        $scope.is_zimmy = true;
+                    } else {
+                        $scope.is_zimmy = false;
+                    }
                 });
 
             });
+
+            /*$scope.gouserstateincookModal = function(){
+                $scope.modal.hide();
+            }*/
+
 
             $scope.yummyClicked = function(){
 
@@ -89,51 +101,38 @@ angular.module('cookers.controllers')
                 yummyData.cook_id = $scope.cook_id;
                 yummyData.cooker_id = $scope.myProfile._id;
 
+
                 yummyService.yummydataHttpRequest(yummyData).then(function(data){
+
+                    var checkData = {};
+
+                    checkData.cooker_yummy_id = $scope.myProfile.yummy;
+                    checkData.cook_id = $scope.cook_id;
+
+                    checkmyyummyService.checkyummyHttpRequest(checkData).then(function(data){
+                        $scope.yummyCheck = data;
+                        if(!$scope.yummyCheck){
+                            /**
+                             * false --> 목록에 없음. 비활성화
+                             */
+                            $scope.yummyclickedStyle = {'color':'inherit'};
+                        } else {
+                            /**
+                             * false --> 목록에 있음. 활성화
+                             */
+                            $scope.yummyclickedStyle = {'color':'deepskyblue'};
+                        }
+                    });
                     $scope.yummy_count = data.cookers.length;
-
-                    /**
-                     * - 위 서비스를 호출 하여 두개의 yummy document에 insert한 뒤
-                     *   yummy 갯수를 가져옴.
-                     *
-                     * - 버튼의 활성화상태를 표시한 후
-                     *   갯수 갱신
-                     */
-
-                    if($scope.yummy_check){
-                        /**
-                         * yummy 활성화 상태 --> 비활성화
-                         */
-                        $scope.yummy_check = false;
-                        $ionicLoading.show({
-                            showBackdrop: false,
-                            template : '맛있어 보이지 않나요? ㅠㅠ'
-                        });
-                        $timeout(function () {
-                            $ionicLoading.hide();
-                        }, 2000);
-                    } else {
-                        /**
-                         * yummy 비활성화 상태 --> 활성화
-                         */
-                        $scope.yummy_check = true;
-                        $ionicLoading.show({
-                            showBackdrop: false,
-                            template : '맛있겠다!!'
-                        });
-                        $timeout(function () {
-                            $ionicLoading.hide();
-                        }, 2000);
-
-                        var notice = {};
-                        notice.kind_code = "L";
-                        notice.from = $scope.myProfile._id;
-                        notice.to = $scope.current_cook.w_cooker._id;
-                        notice.cook = $scope.current_cook._id;
-
-                        insertnoticeService.noticeHttpRequest(notice);
-                    }
                 });
+
+                var notice = {};
+                notice.kind_code = "L";
+                notice.from = $scope.myProfile._id;
+                notice.to = $scope.current_cook.w_cooker._id;
+                notice.cook = $scope.current_cook._id;
+
+                insertnoticeService.noticeHttpRequest(notice);
             }
 
             $scope.manageZimmy = function(){
@@ -186,6 +185,8 @@ angular.module('cookers.controllers')
             }
 
             $scope.tag_clicked = function(tag_name){
+                console.log(tag_name);
+
                 /**
                  * 태그를 검색 한 후 자동완성된 키워드를 터치하면
                  * 해당 키워드의 태그가 포함된 레시피 목록을 보여줌.
